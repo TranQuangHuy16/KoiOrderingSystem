@@ -1,7 +1,9 @@
 package com.project.KoiOrderingSystem.api;
 
+import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.model.AccountResponse;
 import com.project.KoiOrderingSystem.model.LoginRequest;
+import com.project.KoiOrderingSystem.model.ProfileRequest;
 import com.project.KoiOrderingSystem.model.RegisterRequest;
 import com.project.KoiOrderingSystem.service.AuthenticationService;
 import jakarta.validation.Valid;
@@ -35,5 +37,11 @@ public class AuthenticationAPI {
     public ResponseEntity getAllAccount() {
         List<AccountResponse> accounts = authenticationService.getAllAccount();
         return ResponseEntity.ok(accounts);
+    }
+
+    @PutMapping("{accountId}")
+    public ResponseEntity update(@PathVariable long accountId, @Valid @RequestBody ProfileRequest profileRequest){
+        AccountResponse updateAccount = authenticationService.update(accountId, profileRequest);
+        return ResponseEntity.ok(updateAccount);
     }
 }

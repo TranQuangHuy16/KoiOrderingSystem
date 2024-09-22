@@ -5,6 +5,7 @@ import com.project.KoiOrderingSystem.exception.DuplicateEntity;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
 import com.project.KoiOrderingSystem.model.AccountResponse;
 import com.project.KoiOrderingSystem.model.LoginRequest;
+import com.project.KoiOrderingSystem.model.ProfileRequest;
 import com.project.KoiOrderingSystem.model.RegisterRequest;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
@@ -70,6 +71,26 @@ public class AuthenticationService implements UserDetailsService {
         return accounts.stream()
                 .map(entity -> modelMapper.map(entity, AccountResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    public AccountResponse update(long accountId, ProfileRequest profileRequest){
+        Account oldAccount = getAccountById(accountId);
+
+        oldAccount.setLastName(profileRequest.getLastName());
+        oldAccount.setFirstName(profileRequest.getFirstName());
+        oldAccount.setAddress(profileRequest.getAddress());
+        oldAccount.setEmail(profileRequest.getEmail());
+        oldAccount.setPhone(profileRequest.getPhone());
+
+        accountRepository.save(oldAccount);
+        return modelMapper.map(oldAccount, AccountResponse.class);
+    }
+
+    public Account getAccountById(long id){
+        Account account = accountRepository.findAccountById(id);
+        if(account == null) throw new EntityNotFoundException("Account not exist!");
+
+        return account;
     }
 
     @Override

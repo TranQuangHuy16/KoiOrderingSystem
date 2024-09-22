@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -24,6 +25,7 @@ public class Account implements UserDetails {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     int id;
 
     @Column(columnDefinition = "int default 0")
@@ -36,7 +38,7 @@ public class Account implements UserDetails {
     String password;
 
     @Size(min = 2, max = 32, message = "First name must be between 2 and 32 characters")
-    String firstNamme;
+    String firstName;
 
     @Size(min = 2, max = 32, message = "Last name must be between 2 and 32 characters")
     String lastName;
