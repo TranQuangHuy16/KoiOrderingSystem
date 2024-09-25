@@ -6,6 +6,7 @@ import com.project.KoiOrderingSystem.model.LoginRequest;
 import com.project.KoiOrderingSystem.model.ProfileRequest;
 import com.project.KoiOrderingSystem.model.RegisterRequest;
 import com.project.KoiOrderingSystem.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("*")
+@SecurityRequirement(name = "api")
+
 public class AuthenticationAPI {
 
     @Autowired
