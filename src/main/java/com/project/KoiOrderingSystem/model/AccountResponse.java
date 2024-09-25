@@ -1,11 +1,12 @@
 package com.project.KoiOrderingSystem.model;
 
+import com.project.KoiOrderingSystem.entity.Role;
 import lombok.Data;
 
 @Data
 public class AccountResponse {
-    int id;
-    int roleId;
+    long id;
+    Role role;
     String username;
     String firstName;
     String lastName;
@@ -13,4 +14,5 @@ public class AccountResponse {
     String phone;
     String email;
     String profile;
+    String token;
 }
