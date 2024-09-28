@@ -3,10 +3,7 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.exception.DuplicateEntity;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
-import com.project.KoiOrderingSystem.model.AccountResponse;
-import com.project.KoiOrderingSystem.model.LoginRequest;
-import com.project.KoiOrderingSystem.model.ProfileRequest;
-import com.project.KoiOrderingSystem.model.RegisterRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +38,22 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    EmailService emailService;
+
     public AccountResponse register (RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
         try {
             String originalPass =account.getPassword();
             account.setPassword(passwordEncoder.encode(originalPass));
             Account newAccount = accountRepository.save(account);
+
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome Koi Ordering System");
+            emailDetail.setLink("https://www.google.com.vn/");
+
+            emailService.sendEmail(emailDetail);
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
                 throw new DuplicateEntity("Duplicate username");
