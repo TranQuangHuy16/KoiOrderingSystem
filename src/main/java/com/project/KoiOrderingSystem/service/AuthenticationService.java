@@ -97,6 +97,11 @@ public class AuthenticationService implements UserDetailsService {
         return modelMapper.map(oldAccount, AccountResponse.class);
     }
 
+    public AccountResponse viewProfile (long accountId){
+        Account viewAccount = getAccountById(accountId);
+        return modelMapper.map(viewAccount, AccountResponse.class);
+    }
+
     public Account getAccountById(long id){
         Account account = accountRepository.findAccountById(id);
         if(account == null) throw new EntityNotFoundException("Account not exist!");
