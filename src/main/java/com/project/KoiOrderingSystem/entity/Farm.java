@@ -21,7 +21,7 @@ import java.util.List;
 public class Farm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     long id;
 
     @Size(min = 2, max = 32, message = "Farm name must be between 2 and 32 characters")
@@ -45,6 +45,7 @@ public class Farm {
     @OneToMany(mappedBy = "farm")
     @JsonIgnore
     List<KoiFish> koiFish;
+
 
     @JsonIgnore
     boolean isDeleted = false;
