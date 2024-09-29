@@ -49,7 +49,7 @@ public class AuthenticationService implements UserDetailsService {
             Account newAccount = accountRepository.save(account);
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
-                throw new DuplicateEntity("Duplicate username");
+            throw new DuplicateEntity("Duplicate username");
         }
     }
 

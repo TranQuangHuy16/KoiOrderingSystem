@@ -26,5 +26,6 @@ public class KoiRequest {
     @Column(nullable = true)
     String image;
 
+
     long farmId;
 }

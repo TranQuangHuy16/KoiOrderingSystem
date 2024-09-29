@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -39,5 +40,6 @@ public class KoiFish {
     @JoinColumn(name = "farmId")
     Farm farm;
 
+    @JsonIgnore
     boolean isDeleted = false;
 }
