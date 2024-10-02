@@ -46,7 +46,6 @@ public class Farm {
     @JsonIgnore
     List<KoiFish> koiFish;
 
-
     @JsonIgnore
     boolean isDeleted = false;
 }

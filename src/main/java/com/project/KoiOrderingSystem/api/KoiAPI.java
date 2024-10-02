@@ -31,7 +31,6 @@ public class KoiAPI {
         List<KoiFish> koiFishList = koiService.getAllKoi();
         return ResponseEntity.ok(koiFishList);
     }
-
     @PutMapping("{koiId}")
     public ResponseEntity updateKoi(@PathVariable long koiId, @Valid @RequestBody KoiRequest koiRequest) {
         KoiFish newKoi = koiService.updateKoi(koiId, koiRequest);

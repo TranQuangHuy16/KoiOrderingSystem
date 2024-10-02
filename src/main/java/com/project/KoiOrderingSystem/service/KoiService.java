@@ -56,7 +56,7 @@ public class KoiService {
 
 
     public KoiFish updateKoi(long id, KoiRequest koiRequest) {
-        KoiFish oldKoi = koiRepository.findKoiFishById(id);
+        KoiFish oldKoi = getKoi(id);
 
         oldKoi.setKoiName(koiRequest.getKoiName());
         oldKoi.setFarm(farmService.getFarmById(koiRequest.getFarmId()));
@@ -83,11 +83,11 @@ public class KoiService {
         return koiFish;
     }
 
-    public boolean isFarmExist(long id) {
-        Farm farm = farmService.getFarmById(id);
-        if (farm == null) {
-            return false;
-        }
-        return true;
-    }
+//    public boolean isFarmExist(long id) {
+//        Farm farm = farmService.getFarmById(id);
+//        if (farm == null) {
+//            return false;
+//        }
+//        return true;
+//    }
 }
