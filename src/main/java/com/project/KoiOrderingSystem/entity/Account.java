@@ -54,6 +54,7 @@ public class Account implements UserDetails {
     String phone;
 
     @Email(message = "Invalid email")
+    @Column(unique = true)
     String email;
 
     @Column(nullable = true)
