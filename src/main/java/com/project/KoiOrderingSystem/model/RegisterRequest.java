@@ -18,6 +18,7 @@ public class RegisterRequest {
     String lastName;
 
     @Email(message = "Invalid email")
+    @Column(unique = true)
     String email;
 
     @Size(min = 6, message = "Password must at lease 6 characters")
