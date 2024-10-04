@@ -3,16 +3,14 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.exception.DuplicateEntity;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
-import com.project.KoiOrderingSystem.model.AccountResponse;
-import com.project.KoiOrderingSystem.model.LoginRequest;
-import com.project.KoiOrderingSystem.model.ProfileRequest;
-import com.project.KoiOrderingSystem.model.RegisterRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,12 +39,22 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    EmailService emailService;
+
     public AccountResponse register (RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
         try {
             String originalPass =account.getPassword();
             account.setPassword(passwordEncoder.encode(originalPass));
             Account newAccount = accountRepository.save(account);
+
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome Koi Ordering System");
+            emailDetail.setLink("https://www.google.com.vn/");
+
+            emailService.sendEmail(emailDetail);
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getUsername())) {
@@ -94,11 +102,37 @@ public class AuthenticationService implements UserDetailsService {
         return modelMapper.map(oldAccount, AccountResponse.class);
     }
 
+    public AccountResponse viewProfile (long accountId){
+        Account viewAccount = getAccountById(accountId);
+        return modelMapper.map(viewAccount, AccountResponse.class);
+    }
+
     public Account getAccountById(long id){
         Account account = accountRepository.findAccountById(id);
         if(account == null) throw new EntityNotFoundException("Account not exist!");
 
         return account;
+    }
+
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest){
+        Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
+        if(account == null) throw new EntityNotFoundException("Email not exist!");
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(account);
+        emailDetail.setSubject("Forgot password");
+        emailDetail.setLink("https://blearning.vn/guide/swp/docker-local?token=" + tokenService.generateToken(account));
+        emailService.sendEmailForgotPassword(emailDetail);
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest){
+        Account account = getCurrentAccount();
+        account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        accountRepository.save(account);
+    }
+
+    public Account getCurrentAccount() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return accountRepository.findAccountById(account.getId());
     }
 
     @Override
