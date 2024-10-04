@@ -42,9 +42,10 @@ public class Farm {
     @Column(nullable = true)
     String image;
 
-    @OneToMany
+    @OneToMany(mappedBy = "farm")
     @JsonIgnore
     List<KoiFish> koiFish;
 
+    @JsonIgnore
     boolean isDeleted = false;
 }

@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -20,6 +21,7 @@ public class KoiFish {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     long id;
 
+    @Size(min = 2, max = 32, message = "Koi name must be between 2 and 32 characters")
     String koiName;
 
     @Size(min = 2, max = 32, message = "Type must be between 2 and 32 characters")
@@ -35,6 +37,9 @@ public class KoiFish {
     String image;
 
     @ManyToOne
-    @JoinColumn(name = "koiId")
+    @JoinColumn(name = "farmId")
     Farm farm;
+
+    @JsonIgnore
+    boolean isDeleted = false;
 }
