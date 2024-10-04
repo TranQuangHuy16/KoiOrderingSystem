@@ -57,7 +57,11 @@ public class AuthenticationService implements UserDetailsService {
             emailService.sendEmail(emailDetail);
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
-                throw new DuplicateEntity("Duplicate username");
+            if (e.getMessage().contains(account.getUsername())) {
+                throw new DuplicateEntity("Uername is already exist");
+            } else  {
+                throw new DuplicateEntity("Email is already exist");
+            }
         }
     }
 
