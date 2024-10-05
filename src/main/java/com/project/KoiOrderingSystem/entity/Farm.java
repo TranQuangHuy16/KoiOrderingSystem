@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,4 +49,8 @@ public class Farm {
 
     @JsonIgnore
     boolean isDeleted = false;
+
+    @ManyToMany(mappedBy = "farms")
+    @JsonIgnore
+    Set<Trip> trips;
 }
