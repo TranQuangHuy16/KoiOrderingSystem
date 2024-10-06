@@ -40,10 +40,6 @@ public class Trip {
     @Column(nullable = false)
     String endLocation;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'COMING_SOON'")
-    StatusTrip status;
-
     @JsonIgnore
     boolean isDeleted = false;
 
