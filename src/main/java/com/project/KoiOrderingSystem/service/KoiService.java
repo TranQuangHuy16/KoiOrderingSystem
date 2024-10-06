@@ -72,7 +72,8 @@ public class KoiService {
         KoiFish oldKoi = getKoi(id);
 
         oldKoi.setDeleted(true);
-        return oldKoi;
+
+        return koiRepository.save(oldKoi);
     }
 
     public KoiFish getKoi(long id) {

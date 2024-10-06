@@ -2,7 +2,6 @@ package com.project.KoiOrderingSystem.service;
 
 
 import com.project.KoiOrderingSystem.entity.Farm;
-import com.project.KoiOrderingSystem.entity.StatusTrip;
 import com.project.KoiOrderingSystem.entity.Trip;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
 import com.project.KoiOrderingSystem.model.TripRequest;
@@ -33,7 +32,6 @@ public class TripService {
         newtrip.setEndDate(tripRequest.getEndDate());
         newtrip.setStartLocation(tripRequest.getStartLocation());
         newtrip.setEndLocation(tripRequest.getEndLocation());
-        newtrip.setStatus(tripRequest.getStatus());
 
         Set<Farm> farmList = new HashSet<>();
         for (Long farmIds : tripRequest.getFarmIds()) {
