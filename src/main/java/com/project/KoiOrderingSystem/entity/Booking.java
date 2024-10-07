@@ -42,4 +42,11 @@ public class Booking {
     @Column(nullable = true)
     String note;
 
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "tripId")
+    Trip trip;
 }
