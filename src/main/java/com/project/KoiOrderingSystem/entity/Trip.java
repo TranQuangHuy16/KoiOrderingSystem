@@ -51,4 +51,7 @@ public class Trip {
     )
     Set<Farm> farms;
 
+    @OneToMany(mappedBy = "trip")
+    @JsonIgnore
+    Set<Booking> bookings;
 }

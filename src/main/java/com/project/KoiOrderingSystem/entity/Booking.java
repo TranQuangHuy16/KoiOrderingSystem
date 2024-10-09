@@ -32,14 +32,21 @@ public class Booking {
     @Column(nullable = true)
     String image;
 
-    @FutureOrPresent(message = "Date must be present or future")
+
     Date bookingDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'DANG_CHO_XAC_NHAN'")
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
     StatusBooking status;
 
     @Column(nullable = true)
     String note;
 
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "tripId")
+    Trip trip;
 }
