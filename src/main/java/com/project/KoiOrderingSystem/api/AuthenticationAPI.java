@@ -40,11 +40,11 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(accounts);
     }
 
-    @GetMapping("{accountId}")
-    public ResponseEntity viewProfile(@PathVariable long accountId){
-        AccountResponse profileAccount = authenticationService.viewProfile(accountId);
-        return ResponseEntity.ok(profileAccount);
-    }
+//    @GetMapping("{accountId}")
+//    public ResponseEntity viewProfile(@PathVariable long accountId){
+//        AccountResponse profileAccount = authenticationService.viewProfile(accountId);
+//        return ResponseEntity.ok(profileAccount);
+//    }
 
     @PutMapping("{accountId}")
     public ResponseEntity update(@PathVariable long accountId, @Valid @RequestBody ProfileRequest profileRequest){
