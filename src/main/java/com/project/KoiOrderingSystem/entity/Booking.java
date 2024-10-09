@@ -36,7 +36,7 @@ public class Booking {
     Date bookingDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'DANG_CHO_XAC_NHAN'")
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
     StatusBooking status;
 
     @Column(nullable = true)

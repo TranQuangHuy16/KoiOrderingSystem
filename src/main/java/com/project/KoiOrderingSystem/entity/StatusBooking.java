@@ -1,5 +1,10 @@
 package com.project.KoiOrderingSystem.entity;
 
 public enum StatusBooking {
-    DANG_CHO_XAC_NHAN
+    PENDING_CONFIRMATION,
+    AWAITING_PAYMENT,
+    IN_PROGRESS,
+    CHECK_IN,
+    CANCEL,
+    COMPLETED
 }
