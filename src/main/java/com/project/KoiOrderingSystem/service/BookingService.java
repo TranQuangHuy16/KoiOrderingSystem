@@ -23,7 +23,6 @@ public class BookingService {
 
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
-        booking.setTotalPrice(bookingRequest.getTotalPrice());
         booking.setBookingDate(new Date());
         booking.setImage(bookingRequest.getImage());
         booking.setStatus(bookingRequest.getStatus());

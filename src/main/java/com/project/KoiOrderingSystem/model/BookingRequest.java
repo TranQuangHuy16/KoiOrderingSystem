@@ -12,12 +12,10 @@ import java.util.Date;
 
 @Data
 public class BookingRequest {
-    @Min(value = 0, message = "Total Price must be more than 0")
-    float totalPrice;
 
     @Column(nullable = true)
     String image;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'DANG_CHO_XAC_NHAN'")
     StatusBooking status;
