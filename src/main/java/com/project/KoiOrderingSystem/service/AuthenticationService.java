@@ -3,16 +3,14 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.exception.DuplicateEntity;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
-import com.project.KoiOrderingSystem.model.AccountResponse;
-import com.project.KoiOrderingSystem.model.LoginRequest;
-import com.project.KoiOrderingSystem.model.ProfileRequest;
-import com.project.KoiOrderingSystem.model.RegisterRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,6 +38,10 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     TokenService tokenService;
+
+
+    @Autowired
+    EmailService emailService;
 
     public AccountResponse register (RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
@@ -73,6 +75,21 @@ public class AuthenticationService implements UserDetailsService {
             throw new EntityNotFoundException("Username or password invalid");
         }
     }
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest){
+        Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
+        if(account == null) throw new EntityNotFoundException("Email not exist!");
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(account);
+        emailDetail.setSubject("Forgot password");
+        emailDetail.setLink("https://blearning.vn/guide/swp/docker-local?token=" + tokenService.generateToken(account));
+        emailService.sendEmailForgotPassword(emailDetail);
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest){
+        Account account = getCurrentAccount();
+        account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+        accountRepository.save(account);
+    }
 
     public List<AccountResponse> getAllAccount() {
         List<Account> accounts = accountRepository.findAll();
@@ -104,5 +121,10 @@ public class AuthenticationService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findAccountByUsername(username);
+    }
+
+    public Account getCurrentAccount() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return accountRepository.findAccountById(account.getId());
     }
 }
