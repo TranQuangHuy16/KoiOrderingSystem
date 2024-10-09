@@ -25,4 +25,7 @@ public class ProfileRequest {
     @Email(message = "Invalid email")
     String email;
 
+    @Column(nullable = true)
+    String profile;
+
 }

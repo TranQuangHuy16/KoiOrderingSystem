@@ -1,10 +1,7 @@
 package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Account;
-import com.project.KoiOrderingSystem.model.AccountResponse;
-import com.project.KoiOrderingSystem.model.LoginRequest;
-import com.project.KoiOrderingSystem.model.ProfileRequest;
-import com.project.KoiOrderingSystem.model.RegisterRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -43,9 +40,27 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(accounts);
     }
 
+    @GetMapping("{accountId}")
+    public ResponseEntity viewProfile(@PathVariable long accountId){
+        AccountResponse profileAccount = authenticationService.viewProfile(accountId);
+        return ResponseEntity.ok(profileAccount);
+    }
+
     @PutMapping("{accountId}")
     public ResponseEntity update(@PathVariable long accountId, @Valid @RequestBody ProfileRequest profileRequest){
         AccountResponse updateAccount = authenticationService.update(accountId, profileRequest);
         return ResponseEntity.ok(updateAccount);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest){
+        authenticationService.forgotPassword(forgotPasswordRequest);
+        return ResponseEntity.ok("Check your email to reset password");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest){
+        authenticationService.resetPassword(resetPasswordRequest);
+        return ResponseEntity.ok("Reset password successfully");
     }
 }
