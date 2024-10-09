@@ -32,7 +32,7 @@ public class Booking {
     @Column(nullable = true)
     String image;
 
-    @FutureOrPresent(message = "Date must be present or future")
+
     Date bookingDate;
 
     @Enumerated(EnumType.STRING)

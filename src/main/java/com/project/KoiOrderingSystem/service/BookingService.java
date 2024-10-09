@@ -7,6 +7,8 @@ import com.project.KoiOrderingSystem.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class BookingService {
 
@@ -22,7 +24,7 @@ public class BookingService {
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
         booking.setTotalPrice(bookingRequest.getTotalPrice());
-        booking.setBookingDate(bookingRequest.getBookingDate());
+        booking.setBookingDate(new Date());
         booking.setImage(bookingRequest.getImage());
         booking.setStatus(bookingRequest.getStatus());
         booking.setNote(bookingRequest.getNote());
