@@ -49,6 +49,12 @@ public class AuthenticationService implements UserDetailsService {
             String originalPass =account.getPassword();
             account.setPassword(passwordEncoder.encode(originalPass));
             Account newAccount = accountRepository.save(account);
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(account);
+            emailDetail.setSubject("Welcome to Koi Ordering System");
+            emailDetail.setLink("https://blearning.vn");
+            emailService.sendEmail(emailDetail);
+
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getUsername())) {
