@@ -34,7 +34,7 @@ public class BookingAPI {
     }
 
     @GetMapping("/customer")
-    public ResponseEntity getBookingById() {
+    public ResponseEntity getBookingByAccount() {
         List<Booking> bookingList = bookingService.getBookingByAccount();
         return ResponseEntity.ok(bookingList);
     }
