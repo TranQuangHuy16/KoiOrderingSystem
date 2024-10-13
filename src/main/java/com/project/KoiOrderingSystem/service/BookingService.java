@@ -41,7 +41,7 @@ public class BookingService {
         return bookingList;
     }
 
-    public List<Booking> getBookingById() {
+    public List<Booking> getBookingByAccount() {
         Account account = authenticationService.getCurrentAccount();
         List<Booking> bookingList = bookingRepository.findBookingsByAccount(account);
         return bookingList;
@@ -52,6 +52,11 @@ public class BookingService {
         updatedbooking.setTotalPrice(bookingUpdatePriceRequest.getTotalPrice());
         updatedbooking.setStatus(StatusBooking.AWAITING_PAYMENT);
         return bookingRepository.save(updatedbooking);
+    }
+
+    public Booking getBookingById(long id) {
+        Booking booking = bookingRepository.findBookingById(id);
+        return booking;
     }
 
 }

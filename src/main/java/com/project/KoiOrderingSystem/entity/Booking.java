@@ -1,6 +1,7 @@
 package com.project.KoiOrderingSystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +32,6 @@ public class Booking {
     @Column(nullable = true)
     String image;
 
-
     Date bookingDate;
 
     @Enumerated(EnumType.STRING)
@@ -49,7 +49,8 @@ public class Booking {
     @JoinColumn(name = "tripId")
     Trip trip;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderId", nullable = true)
+
+    @OneToOne(mappedBy = "booking")
+    @JsonIgnore
     Orders order;
 }
