@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,4 +48,8 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "tripId")
     Trip trip;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderId", nullable = true)
+    Orders order;
 }
