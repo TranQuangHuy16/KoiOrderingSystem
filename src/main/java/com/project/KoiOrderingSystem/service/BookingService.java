@@ -41,7 +41,7 @@ public class BookingService {
         return bookingList;
     }
 
-    public List<Booking> getBookingById() {
+    public List<Booking> getBookingByAccount() {
         Account account = authenticationService.getCurrentAccount();
         List<Booking> bookingList = bookingRepository.findBookingsByAccount(account);
         return bookingList;
