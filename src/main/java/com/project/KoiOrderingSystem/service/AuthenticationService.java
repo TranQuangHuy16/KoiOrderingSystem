@@ -112,6 +112,7 @@ public class AuthenticationService implements UserDetailsService {
         oldAccount.setAddress(profileRequest.getAddress());
         oldAccount.setEmail(profileRequest.getEmail());
         oldAccount.setPhone(profileRequest.getPhone());
+        oldAccount.setProfile(profileRequest.getProfile());
 
         accountRepository.save(oldAccount);
         return modelMapper.map(oldAccount, AccountResponse.class);
