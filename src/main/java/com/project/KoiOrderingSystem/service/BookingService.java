@@ -54,4 +54,9 @@ public class BookingService {
         return bookingRepository.save(updatedbooking);
     }
 
+    public Booking getBookingById(long id) {
+        Booking booking = bookingRepository.findBookingById(id);
+        return booking;
+    }
+
 }

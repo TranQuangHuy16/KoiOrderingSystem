@@ -1,11 +1,11 @@
 package com.project.KoiOrderingSystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +32,6 @@ public class Booking {
     @Column(nullable = true)
     String image;
 
-
     Date bookingDate;
 
     @Enumerated(EnumType.STRING)
@@ -49,4 +48,9 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "tripId")
     Trip trip;
+
+
+    @OneToOne(mappedBy = "booking")
+    @JsonIgnore
+    Orders order;
 }
