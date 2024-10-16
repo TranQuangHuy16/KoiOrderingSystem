@@ -27,7 +27,6 @@ public class BookingService {
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
         booking.setBookingDate(new Date());
-        booking.setImage(bookingRequest.getImage());
         booking.setStatus(bookingRequest.getStatus());
         booking.setNote(bookingRequest.getNote());
         Account account = authenticationService.getCurrentAccount();

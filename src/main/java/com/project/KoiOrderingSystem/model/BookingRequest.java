@@ -13,9 +13,6 @@ import java.util.Date;
 @Data
 public class BookingRequest {
 
-    @Column(nullable = true)
-    String image;
-
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
     StatusBooking status;
