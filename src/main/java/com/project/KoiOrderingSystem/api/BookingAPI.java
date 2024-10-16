@@ -1,6 +1,7 @@
 package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Booking;
+import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
 import com.project.KoiOrderingSystem.model.BookingRequest;
 import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
 import com.project.KoiOrderingSystem.service.BookingService;
@@ -43,5 +44,11 @@ public class BookingAPI {
     public ResponseEntity updateBooking(@Valid @RequestBody BookingUpdatePriceRequest bookingUpdatePriceRequest, @PathVariable long bookingId) {
         Booking booking = bookingService.updateBooking(bookingUpdatePriceRequest, bookingId);
         return ResponseEntity.ok(booking);
+    }
+
+    @PostMapping("payment")
+    public ResponseEntity paymentBooking(@RequestBody BookingPaymentRequest bookingPaymentRequest) throws Exception {
+        String url = bookingService.paymentBooking(bookingPaymentRequest);
+        return ResponseEntity.ok(url);
     }
 }
