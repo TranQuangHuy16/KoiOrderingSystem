@@ -49,6 +49,7 @@ public class AuthenticationService implements UserDetailsService {
             String originalPass =account.getPassword();
             account.setPassword(passwordEncoder.encode(originalPass));
             Account newAccount = accountRepository.save(account);
+
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(account);
             emailDetail.setSubject("Welcome to Koi Ordering System");
