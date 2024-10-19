@@ -88,7 +88,7 @@ public class AuthenticationService implements UserDetailsService {
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setReceiver(account);
         emailDetail.setSubject("Forgot password");
-        emailDetail.setLink("https://blearning.vn/guide/swp/docker-local?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://localhost:5173/reset-password?token=" + tokenService.generateToken(account));
         emailService.sendEmailForgotPassword(emailDetail);
     }
 
