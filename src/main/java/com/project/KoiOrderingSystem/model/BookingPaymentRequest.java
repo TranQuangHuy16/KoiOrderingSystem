@@ -12,6 +12,4 @@ public class BookingPaymentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @Min(value = 0, message = "Total Price must be more than 0")
-    float totalPrice;
 }
