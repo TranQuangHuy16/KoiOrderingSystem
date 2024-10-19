@@ -5,6 +5,7 @@ import com.project.KoiOrderingSystem.entity.Booking;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
 import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
 import com.project.KoiOrderingSystem.model.BookingRequest;
+import com.project.KoiOrderingSystem.model.BookingStatusUpdateRequest;
 import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,12 @@ public class BookingService {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setTotalPrice(bookingUpdatePriceRequest.getTotalPrice());
         updatedbooking.setStatus(StatusBooking.AWAITING_PAYMENT);
+        return bookingRepository.save(updatedbooking);
+    }
+
+    public Booking updateStatus(BookingStatusUpdateRequest bookingStatusUpdateRequest, long bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setStatus(bookingStatusUpdateRequest.getStatus());
         return bookingRepository.save(updatedbooking);
     }
 
