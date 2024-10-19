@@ -66,6 +66,14 @@ public class Account implements UserDetails {
     @JsonIgnore
     Set<Booking> bookings;
 
+    @OneToMany(mappedBy = "from")
+    @JsonIgnore
+    Set<Transactions> transactionsFrom;
+
+    @OneToMany(mappedBy = "to")
+    @JsonIgnore
+    Set<Transactions> transactionsTo;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
