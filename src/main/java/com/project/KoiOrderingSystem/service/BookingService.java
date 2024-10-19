@@ -3,14 +3,26 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.entity.Booking;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
+import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
 import com.project.KoiOrderingSystem.model.BookingRequest;
+import com.project.KoiOrderingSystem.model.BookingStatusUpdateRequest;
 import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class BookingService {
@@ -27,7 +39,6 @@ public class BookingService {
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
         booking.setBookingDate(new Date());
-        booking.setImage(bookingRequest.getImage());
         booking.setStatus(bookingRequest.getStatus());
         booking.setNote(bookingRequest.getNote());
         Account account = authenticationService.getCurrentAccount();
@@ -54,9 +65,86 @@ public class BookingService {
         return bookingRepository.save(updatedbooking);
     }
 
+    public Booking updateStatus(BookingStatusUpdateRequest bookingStatusUpdateRequest, long bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setStatus(bookingStatusUpdateRequest.getStatus());
+        return bookingRepository.save(updatedbooking);
+    }
+
     public Booking getBookingById(long id) {
         Booking booking = bookingRepository.findBookingById(id);
         return booking;
     }
 
+    public String paymentBooking(BookingPaymentRequest bookingPaymentRequest) throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime createDate = LocalDateTime.now();
+        String formattedCreateDate = createDate.format(formatter);
+
+        //code của mình
+        float money = bookingPaymentRequest.getTotalPrice() * 100;
+        String amount = String.valueOf((int) money);
+
+
+
+        String tmnCode = "J8GSGBC5";
+        String secretKey = "S7IQI58YMDLNRT5CVPGTLQLV7EJ325KC";
+        String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + bookingPaymentRequest.getId();
+        String currCode = "VND";
+
+        Map<String, String> vnpParams = new TreeMap<>();
+        vnpParams.put("vnp_Version", "2.1.0");
+        vnpParams.put("vnp_Command", "pay");
+        vnpParams.put("vnp_TmnCode", tmnCode);
+        vnpParams.put("vnp_Locale", "vn");
+        vnpParams.put("vnp_CurrCode", currCode);
+        vnpParams.put("vnp_TxnRef", String.valueOf(bookingPaymentRequest.getId()));
+        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + bookingPaymentRequest.getId());
+        vnpParams.put("vnp_OrderType", "other");
+        vnpParams.put("vnp_Amount",amount);
+
+        vnpParams.put("vnp_ReturnUrl", returnUrl);
+        vnpParams.put("vnp_CreateDate", formattedCreateDate);
+        vnpParams.put("vnp_IpAddr", "128.199.178.23");
+
+        StringBuilder signDataBuilder = new StringBuilder();
+        for (Map.Entry<String, String> entry : vnpParams.entrySet()) {
+            signDataBuilder.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString()));
+            signDataBuilder.append("=");
+            signDataBuilder.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
+            signDataBuilder.append("&");
+        }
+        signDataBuilder.deleteCharAt(signDataBuilder.length() - 1); // Remove last '&'
+
+        String signData = signDataBuilder.toString();
+        String signed = generateHMAC(secretKey, signData);
+
+        vnpParams.put("vnp_SecureHash", signed);
+
+        StringBuilder urlBuilder = new StringBuilder(vnpUrl);
+        urlBuilder.append("?");
+        for (Map.Entry<String, String> entry : vnpParams.entrySet()) {
+            urlBuilder.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString()));
+            urlBuilder.append("=");
+            urlBuilder.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
+            urlBuilder.append("&");
+        }
+        urlBuilder.deleteCharAt(urlBuilder.length() - 1); // Remove last '&'
+
+        return urlBuilder.toString();
+    }
+
+    private String generateHMAC(String secretKey, String signData) throws NoSuchAlgorithmException, InvalidKeyException {
+        Mac hmacSha512 = Mac.getInstance("HmacSHA512");
+        SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
+        hmacSha512.init(keySpec);
+        byte[] hmacBytes = hmacSha512.doFinal(signData.getBytes(StandardCharsets.UTF_8));
+
+        StringBuilder result = new StringBuilder();
+        for (byte b : hmacBytes) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
 }

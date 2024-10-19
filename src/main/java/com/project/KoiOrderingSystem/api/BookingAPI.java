@@ -1,7 +1,10 @@
 package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Booking;
+import com.project.KoiOrderingSystem.entity.StatusBooking;
+import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
 import com.project.KoiOrderingSystem.model.BookingRequest;
+import com.project.KoiOrderingSystem.model.BookingStatusUpdateRequest;
 import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
 import com.project.KoiOrderingSystem.service.BookingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,5 +46,17 @@ public class BookingAPI {
     public ResponseEntity updateBooking(@Valid @RequestBody BookingUpdatePriceRequest bookingUpdatePriceRequest, @PathVariable long bookingId) {
         Booking booking = bookingService.updateBooking(bookingUpdatePriceRequest, bookingId);
         return ResponseEntity.ok(booking);
+    }
+
+    @PutMapping("/status/{bookingId}")
+    public ResponseEntity updateStatus(@Valid @RequestBody BookingStatusUpdateRequest bookingStatusUpdateRequest, @PathVariable long bookingId) {
+        Booking booking = bookingService.updateStatus(bookingStatusUpdateRequest, bookingId);
+        return ResponseEntity.ok(booking);
+    }
+
+    @PostMapping("payment")
+    public ResponseEntity paymentBooking(@RequestBody BookingPaymentRequest bookingPaymentRequest) throws Exception {
+        String url = bookingService.paymentBooking(bookingPaymentRequest);
+        return ResponseEntity.ok(url);
     }
 }
