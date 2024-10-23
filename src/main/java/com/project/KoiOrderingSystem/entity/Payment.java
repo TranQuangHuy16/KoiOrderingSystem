@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+
 import java.util.Date;
 import java.util.Set;
 
@@ -17,16 +18,16 @@ public class Payment {
     Date created_at;
 
     @OneToOne
+    @JoinColumn(name = "bookingId", nullable = true)
     @JsonIgnore
-    @JoinColumn(name = "orderId")
-    Orders orders;
-
-    @OneToOne
-    @JsonIgnore
-    @JoinColumn(name = "bookingId")
     Booking booking;
 
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "bookingId", nullable = true)
     @JsonIgnore
-    Set<Transactions> transactions;
+    Orders order;
+
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+    @JsonIgnore
+    Transactions transactions;
 }

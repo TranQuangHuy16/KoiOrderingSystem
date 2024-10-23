@@ -47,11 +47,15 @@ public class Booking {
     Account account;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "tripId")
     Trip trip;
-
 
     @OneToOne(mappedBy = "booking")
     @JsonIgnore
     Orders order;
+
+    @OneToOne(mappedBy = "booking")
+    @JsonIgnore
+    Payment payment;
 }

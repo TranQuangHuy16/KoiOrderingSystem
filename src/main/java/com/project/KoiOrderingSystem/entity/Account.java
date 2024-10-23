@@ -60,6 +60,7 @@ public class Account implements UserDetails {
     String email;
 
     @Column(nullable = true)
+    @JsonIgnore
     String profile;
 
     @OneToMany(mappedBy = "account")
