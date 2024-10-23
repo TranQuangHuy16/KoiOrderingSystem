@@ -47,7 +47,6 @@ public class Booking {
     Account account;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "tripId")
     Trip trip;
 
