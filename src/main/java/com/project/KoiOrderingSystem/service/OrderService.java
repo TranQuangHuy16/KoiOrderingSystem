@@ -53,4 +53,8 @@ public class OrderService {
         order.setStatus(StatusOrder.COMPLETED);
         return orderRepository.save(order);
     }
+
+    public Orders getOrderById(long id) {
+        return orderRepository.findOrderById(id);
+    }
 }

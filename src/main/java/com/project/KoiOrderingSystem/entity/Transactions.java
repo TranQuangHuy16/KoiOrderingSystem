@@ -1,6 +1,8 @@
 package com.project.KoiOrderingSystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,15 +16,21 @@ public class Transactions {
 
     @ManyToOne
     @JoinColumn(name = "fromId")
+    @JsonIgnore
     Account from;
 
     @ManyToOne
     @JoinColumn(name = "toId")
+    @JsonIgnore
     Account to;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "paymentId")
+    @JsonIgnore
     Payment payment;
+
+    @Enumerated(EnumType.STRING)
+    StatusTransactions status;
 
     String description;
 
