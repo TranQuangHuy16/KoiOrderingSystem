@@ -3,10 +3,7 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.entity.Booking;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
-import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
-import com.project.KoiOrderingSystem.model.BookingRequest;
-import com.project.KoiOrderingSystem.model.BookingStatusUpdateRequest;
-import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,7 +68,13 @@ public class BookingService {
         return bookingRepository.save(updatedbooking);
     }
 
-    public Booking getBookingById(long id) {
+    public Booking updateCheckIn(CheckInRequest checkInRequest, long bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setImage(checkInRequest.getImage());
+        return bookingRepository.save(updatedbooking);
+
+
+        public Booking getBookingById(long id) {
         Booking booking = bookingRepository.findBookingById(id);
         return booking;
     }
