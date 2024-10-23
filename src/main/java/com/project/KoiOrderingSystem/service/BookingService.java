@@ -94,7 +94,7 @@ public class BookingService {
         String tmnCode = "J8GSGBC5";
         String secretKey = "S7IQI58YMDLNRT5CVPGTLQLV7EJ325KC";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + bookingPaymentRequest.getId();
+        String returnUrl = "http://localhost:5173/book-status?bookingId=" + bookingPaymentRequest.getId();
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
