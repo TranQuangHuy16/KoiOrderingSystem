@@ -82,7 +82,8 @@ public class BookingService {
         String formattedCreateDate = createDate.format(formatter);
 
         //code của mình
-        float money = bookingPaymentRequest.getTotalPrice() * 100;
+        Booking booking = getBookingById(bookingPaymentRequest.getId());
+        float money = booking.getTotalPrice() * 100;
         String amount = String.valueOf((int) money);
 
 
