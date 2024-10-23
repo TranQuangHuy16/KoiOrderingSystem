@@ -1,9 +1,11 @@
 package com.project.KoiOrderingSystem.service;
 
 import com.project.KoiOrderingSystem.entity.Farm;
+import com.project.KoiOrderingSystem.entity.KoiFish;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
 import com.project.KoiOrderingSystem.model.FarmRequest;
 import com.project.KoiOrderingSystem.repository.FarmRepository;
+import com.project.KoiOrderingSystem.repository.KoiRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,12 @@ public class FarmService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    KoiService koiService;
+
+    @Autowired
+    KoiRepository koiRepository;
 
     public Farm createFarm(FarmRequest farmRequest) {
         Farm farm = modelMapper.map(farmRequest, Farm.class);
@@ -48,6 +56,14 @@ public class FarmService {
 
     public Farm deleteFarm(long id) {
         Farm oldFarm = getFarmById(id);
+
+        List<KoiFish> koiFishes = koiService.getAllKoi();
+        for (KoiFish koiFish : koiFishes) {
+            if (koiFish.getFarm().getId() == id) {
+                koiFish.setDeleted(true);
+                koiRepository.save(koiFish);
+            }
+        }
 
         oldFarm.setDeleted(true);
         return farmRepository.save(oldFarm);

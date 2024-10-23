@@ -60,11 +60,20 @@ public class Account implements UserDetails {
     String email;
 
     @Column(nullable = true)
+    @JsonIgnore
     String profile;
 
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     Set<Booking> bookings;
+
+    @OneToMany(mappedBy = "from")
+    @JsonIgnore
+    Set<Transactions> transactionsFrom;
+
+    @OneToMany(mappedBy = "to")
+    @JsonIgnore
+    Set<Transactions> transactionsTo;
 
 
     @Override

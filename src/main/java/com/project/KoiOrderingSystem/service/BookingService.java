@@ -3,10 +3,7 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.entity.Booking;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
-import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
-import com.project.KoiOrderingSystem.model.BookingRequest;
-import com.project.KoiOrderingSystem.model.BookingStatusUpdateRequest;
-import com.project.KoiOrderingSystem.model.BookingUpdatePriceRequest;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +68,12 @@ public class BookingService {
         return bookingRepository.save(updatedbooking);
     }
 
+    public Booking updateCheckIn(CheckInRequest checkInRequest, long bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setImage(checkInRequest.getImage());
+        return bookingRepository.save(updatedbooking);
+    }
+
     public Booking getBookingById(long id) {
         Booking booking = bookingRepository.findBookingById(id);
         return booking;
@@ -82,7 +85,8 @@ public class BookingService {
         String formattedCreateDate = createDate.format(formatter);
 
         //code của mình
-        float money = bookingPaymentRequest.getTotalPrice() * 100;
+        Booking booking = getBookingById(bookingPaymentRequest.getId());
+        float money = booking.getTotalPrice() * 100;
         String amount = String.valueOf((int) money);
 
 
@@ -90,7 +94,7 @@ public class BookingService {
         String tmnCode = "J8GSGBC5";
         String secretKey = "S7IQI58YMDLNRT5CVPGTLQLV7EJ325KC";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + bookingPaymentRequest.getId();
+        String returnUrl = "http://localhost:5173/book-status?bookingId=" + bookingPaymentRequest.getId();
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
