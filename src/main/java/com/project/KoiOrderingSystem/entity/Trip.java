@@ -44,7 +44,7 @@ public class Trip {
     boolean isDeleted = false;
 
     @ManyToMany
-    @JsonIgnore
+
     @JoinTable (
             name = "tripFarm",
             joinColumns = @JoinColumn(name = "tripId"),
