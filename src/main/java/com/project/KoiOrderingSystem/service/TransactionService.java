@@ -66,9 +66,9 @@ public class TransactionService {
 
     }
 
-    public void createdTransactionOrder(TransactionOrderRequest transactionOrderRequest) {
+    public void createdTransactionOrder(long orderId) {
 
-        Orders order = orderService.getOrderById(transactionOrderRequest.getOrderId());
+        Orders order = orderService.getOrderById(orderId);
         if (order == null) {
             throw new RuntimeException("Order not found");
         }
