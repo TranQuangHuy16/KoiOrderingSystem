@@ -51,6 +51,5 @@ public class Farm {
     boolean isDeleted = false;
 
     @ManyToMany(mappedBy = "farms")
-    @JsonIgnore
     Set<Trip> trips;
 }

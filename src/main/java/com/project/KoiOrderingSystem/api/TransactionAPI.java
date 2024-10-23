@@ -26,8 +26,8 @@ public class TransactionAPI {
     }
 
     @PostMapping("/order")
-    public ResponseEntity createTransactionOrder(@RequestBody TransactionOrderRequest transactionOrderRequest) {
-        transactionService.createdTransactionOrder(transactionOrderRequest);
+    public ResponseEntity createTransactionOrder(@RequestParam long orderId) {
+        transactionService.createdTransactionOrder(orderId);
         return ResponseEntity.ok("Success");
     }
 }
