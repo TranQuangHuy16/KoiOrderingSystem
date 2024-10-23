@@ -23,11 +23,11 @@ public class Payment {
     Booking booking;
 
     @OneToOne
-    @JoinColumn(name = "bookingId", nullable = true)
+    @JoinColumn(name = "orderId", nullable = true)
     @JsonIgnore
     Orders order;
 
-    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "payment")
     @JsonIgnore
     Transactions transactions;
 }
