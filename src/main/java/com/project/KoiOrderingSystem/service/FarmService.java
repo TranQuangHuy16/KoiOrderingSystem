@@ -19,6 +19,9 @@ public class FarmService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    KoiService koiService;
+
     public Farm createFarm(FarmRequest farmRequest) {
         Farm farm = modelMapper.map(farmRequest, Farm.class);
 
@@ -48,6 +51,8 @@ public class FarmService {
 
     public Farm deleteFarm(long id) {
         Farm oldFarm = getFarmById(id);
+
+
 
         oldFarm.setDeleted(true);
         return farmRepository.save(oldFarm);
