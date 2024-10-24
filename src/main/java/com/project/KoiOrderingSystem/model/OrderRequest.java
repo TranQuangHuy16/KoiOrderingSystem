@@ -22,7 +22,7 @@ public class OrderRequest {
 
     long bookingId;
 
-    List<Long> koiIds;
+    List<OrderDetailRequest> orderDetails;
 
 
 }

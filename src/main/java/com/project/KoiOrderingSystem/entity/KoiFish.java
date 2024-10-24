@@ -45,7 +45,7 @@ public class KoiFish {
     @JsonIgnore
     boolean isDeleted = false;
 
-    @ManyToMany(mappedBy = "kois")
+    @OneToMany(mappedBy = "koi")
     @JsonIgnore
-    Set<Orders> orders;
+    Set<OrderDetail> orderDetails;
 }

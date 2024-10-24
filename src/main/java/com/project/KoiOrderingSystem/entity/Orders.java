@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -39,11 +40,6 @@ public class Orders {
     @JoinColumn(name = "bookingId")
     Booking booking;
 
-    @ManyToMany
-    @JoinTable(
-            name = "orderDetail",
-            joinColumns = @JoinColumn(name = "orderId"),
-            inverseJoinColumns = @JoinColumn(name = "koiId")
-    )
-    Set<KoiFish> kois;
+    @OneToMany(mappedBy = "order")
+    Set<OrderDetail> orderDetails;
 }
