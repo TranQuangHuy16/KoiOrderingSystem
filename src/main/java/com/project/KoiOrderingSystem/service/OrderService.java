@@ -1,9 +1,7 @@
 package com.project.KoiOrderingSystem.service;
 
-import com.project.KoiOrderingSystem.entity.Account;
-import com.project.KoiOrderingSystem.entity.Booking;
-import com.project.KoiOrderingSystem.entity.Orders;
-import com.project.KoiOrderingSystem.entity.StatusOrder;
+import com.project.KoiOrderingSystem.entity.*;
+import com.project.KoiOrderingSystem.model.OrderDetailRequest;
 import com.project.KoiOrderingSystem.model.OrderRequest;
 import com.project.KoiOrderingSystem.model.OrderUpdateCompleted;
 import com.project.KoiOrderingSystem.repository.OrderRepository;
@@ -11,7 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -25,12 +26,29 @@ public class OrderService {
     @Autowired
     BookingService bookingService;
 
-    public Orders createOrder( OrderRequest orderRequest) {
+    @Autowired
+    KoiService koiService;
+
+    public Orders createOrder(OrderRequest orderRequest) {
 
         Orders newOrder = new Orders();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+
         newOrder.setBooking(bookingService.getBookingById(orderRequest.getBookingId()));
         newOrder.setExpectedDate(orderRequest.getExpectedDate());
         newOrder.setStatus(orderRequest.getStatus());
+        Set<KoiFish> kois = new HashSet<>();
+
+        for(OrderDetailRequest orderDetailRequest : orderRequest.getOrderDetails()) {
+            KoiFish koi = koiService.getKoi(orderDetailRequest.getKoiId());
+
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setQuantity(orderDetailRequest.getQuantity());
+            orderDetail.setOrder(newOrder);
+            orderDetail.setKoi(koi);
+            orderDetails.add(orderDetail);
+        }
+        newOrder.setOrderDetails(orderDetails);
         orderRepository.save(newOrder);
 
         return newOrder;

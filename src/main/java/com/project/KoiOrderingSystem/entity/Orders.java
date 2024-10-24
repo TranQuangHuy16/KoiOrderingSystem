@@ -1,11 +1,14 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,4 +40,8 @@ public class Orders {
     @OneToOne
     @JoinColumn(name = "bookingId")
     Booking booking;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    @JsonIgnore
+    List<OrderDetail> orderDetails;
 }

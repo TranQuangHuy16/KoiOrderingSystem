@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class OrderRequest {
@@ -20,6 +21,8 @@ public class OrderRequest {
     StatusOrder status;
 
     long bookingId;
+
+    List<OrderDetailRequest> orderDetails;
 
 
 }

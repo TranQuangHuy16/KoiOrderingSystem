@@ -2,16 +2,18 @@ package com.project.KoiOrderingSystem.service;
 
 import com.project.KoiOrderingSystem.entity.*;
 
-import com.project.KoiOrderingSystem.model.TransactionOrderRequest;
+import com.project.KoiOrderingSystem.model.TransactionRespose;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
+import com.project.KoiOrderingSystem.repository.OrderRepository;
 import com.project.KoiOrderingSystem.repository.PaymentRepository;
 import com.project.KoiOrderingSystem.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -33,6 +35,9 @@ public class TransactionService {
     @Autowired
     PaymentRepository paymentRepository;
 
+    @Autowired
+    OrderRepository orderRepository;
+
 
     public void createdTransactionBooking(long bookingId) {
 
@@ -40,8 +45,6 @@ public class TransactionService {
         if(booking == null) {
             throw new RuntimeException("Booking not found");
         }
-
-//        Set<Transactions> setTransactions  = new HashSet<>();
 
         Payment payment = new Payment();
         payment.setBooking(booking);
@@ -55,11 +58,9 @@ public class TransactionService {
         transaction.setTo(admin);
         transaction.setFrom(customer);
         transaction.setPayment(payment);
+        transaction.setCreated_at(LocalDateTime.now());
         transaction.setStatus(StatusTransactions.SUCCESS);
-        transaction.setDescription("Payment for booking");
-
-//        setTransactions.add(transaction);
-//        payment.setTransactions(transaction);
+        transaction.setDescription("Payment for booking" + booking.getId());
 
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
@@ -73,8 +74,6 @@ public class TransactionService {
             throw new RuntimeException("Order not found");
         }
 
-//        Set<Transactions> setTransactions  = new HashSet<>();
-
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setCreated_at(new Date());
@@ -87,13 +86,47 @@ public class TransactionService {
         transaction.setTo(admin);
         transaction.setFrom(customer);
         transaction.setPayment(payment);
+        transaction.setCreated_at(LocalDateTime.now());
         transaction.setStatus(StatusTransactions.SUCCESS);
-        transaction.setDescription("Payment for order");
-
-//        setTransactions.add(transaction);
-//        payment.setTransactions(setTransactions);
+        transaction.setDescription("Payment for order" + order.getId());
 
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
+
+        order.setStatus(StatusOrder.ON_DELIVERY);
+        orderRepository.save(order);
+
+    }
+
+
+    public List<TransactionRespose> getAllTransaction() {
+        List<TransactionRespose> transactionList = new ArrayList<>();
+        for(Transactions t : transactionRepository.findAll()) {
+            TransactionRespose transaction = new TransactionRespose();
+            transaction.setCreated_at(t.getCreated_at());
+            transaction.setStatus(t.getStatus());
+            transaction.setDescription(t.getDescription());
+            transaction.setPayment(t.getPayment());
+            transaction.setTo(t.getTo().getFirstName() + " " + t.getTo().getLastName());
+            transaction.setFrom(t.getFrom().getFirstName() + " " + t.getFrom().getLastName());
+            transactionList.add(transaction);
+        }
+        return transactionList;
+    }
+
+    public List<TransactionRespose> getAllTransactionByCustomer() {
+        Account account = authenticationService.getCurrentAccount();
+        List<TransactionRespose> transactionList = new ArrayList<>();
+        for(Transactions t : transactionRepository.findTransactionsesByFromId(account.getId())) {
+            TransactionRespose transaction = new TransactionRespose();
+            transaction.setCreated_at(t.getCreated_at());
+            transaction.setStatus(t.getStatus());
+            transaction.setDescription(t.getDescription());
+            transaction.setPayment(t.getPayment());
+            transaction.setTo("Manager");
+            transaction.setFrom(t.getFrom().getFirstName() + " " + t.getFrom().getLastName());
+            transactionList.add(transaction);
+        }
+        return transactionList;
     }
 }
