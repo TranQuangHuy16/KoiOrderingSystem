@@ -1,9 +1,6 @@
 package com.project.KoiOrderingSystem.service;
 
-import com.project.KoiOrderingSystem.entity.Account;
-import com.project.KoiOrderingSystem.entity.Booking;
-import com.project.KoiOrderingSystem.entity.Orders;
-import com.project.KoiOrderingSystem.entity.StatusOrder;
+import com.project.KoiOrderingSystem.entity.*;
 import com.project.KoiOrderingSystem.model.OrderRequest;
 import com.project.KoiOrderingSystem.model.OrderUpdateCompleted;
 import com.project.KoiOrderingSystem.repository.OrderRepository;
@@ -11,7 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -25,12 +24,21 @@ public class OrderService {
     @Autowired
     BookingService bookingService;
 
+    @Autowired
+    KoiService koiService;
+
     public Orders createOrder( OrderRequest orderRequest) {
 
         Orders newOrder = new Orders();
         newOrder.setBooking(bookingService.getBookingById(orderRequest.getBookingId()));
         newOrder.setExpectedDate(orderRequest.getExpectedDate());
         newOrder.setStatus(orderRequest.getStatus());
+        Set<KoiFish> kois = new HashSet<>();
+        for(Long koiId : orderRequest.getKoiIds()) {
+            KoiFish koi = koiService.getKoi(koiId);
+            kois.add(koi);
+            newOrder.setKois(kois);
+        }
         orderRepository.save(newOrder);
 
         return newOrder;

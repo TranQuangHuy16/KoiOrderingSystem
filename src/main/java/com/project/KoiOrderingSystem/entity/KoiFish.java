@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,4 +44,8 @@ public class KoiFish {
 
     @JsonIgnore
     boolean isDeleted = false;
+
+    @ManyToMany(mappedBy = "kois")
+    @JsonIgnore
+    Set<Orders> orders;
 }

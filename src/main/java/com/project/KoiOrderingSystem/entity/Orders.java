@@ -6,6 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,4 +38,12 @@ public class Orders {
     @OneToOne
     @JoinColumn(name = "bookingId")
     Booking booking;
+
+    @ManyToMany
+    @JoinTable(
+            name = "orderDetail",
+            joinColumns = @JoinColumn(name = "orderId"),
+            inverseJoinColumns = @JoinColumn(name = "koiId")
+    )
+    Set<KoiFish> kois;
 }
