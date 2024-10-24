@@ -4,6 +4,7 @@ import com.project.KoiOrderingSystem.entity.*;
 
 import com.project.KoiOrderingSystem.model.TransactionRespose;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
+import com.project.KoiOrderingSystem.repository.OrderRepository;
 import com.project.KoiOrderingSystem.repository.PaymentRepository;
 import com.project.KoiOrderingSystem.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class TransactionService {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
 
 
     public void createdTransactionBooking(long bookingId) {
@@ -88,6 +92,10 @@ public class TransactionService {
 
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
+
+        order.setStatus(StatusOrder.ON_DELIVERY);
+        orderRepository.save(order);
+
     }
 
 
