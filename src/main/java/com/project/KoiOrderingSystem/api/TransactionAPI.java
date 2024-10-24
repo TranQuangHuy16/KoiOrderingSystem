@@ -1,12 +1,14 @@
 package com.project.KoiOrderingSystem.api;
 
-import com.project.KoiOrderingSystem.model.TransactionBookingRequest;
-import com.project.KoiOrderingSystem.model.TransactionOrderRequest;
+import com.project.KoiOrderingSystem.entity.Transactions;
+import com.project.KoiOrderingSystem.model.TransactionRespose;
 import com.project.KoiOrderingSystem.service.TransactionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/transaction")
@@ -29,5 +31,17 @@ public class TransactionAPI {
     public ResponseEntity createTransactionOrder(@RequestParam long orderId) {
         transactionService.createdTransactionOrder(orderId);
         return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/manager")
+    public ResponseEntity getTransactionByManager() {
+        List<TransactionRespose> transactions = transactionService.getAllTransaction();
+        return ResponseEntity.ok(transactions);
+    }
+
+    @GetMapping("/customer")
+    public ResponseEntity getTransactionByCustomer() {
+        List<TransactionRespose> transactions = transactionService.getAllTransactionByCustomer();
+        return ResponseEntity.ok(transactions);
     }
 }

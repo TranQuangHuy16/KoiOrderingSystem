@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 public class Transactions {
@@ -14,19 +16,18 @@ public class Transactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    LocalDateTime created_at;
+
     @ManyToOne
     @JoinColumn(name = "fromId")
-    @JsonIgnore
     Account from;
 
     @ManyToOne
     @JoinColumn(name = "toId")
-    @JsonIgnore
     Account to;
 
     @OneToOne
     @JoinColumn(name = "paymentId")
-    @JsonIgnore
     Payment payment;
 
     @Enumerated(EnumType.STRING)
