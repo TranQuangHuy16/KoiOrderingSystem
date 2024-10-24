@@ -7,6 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -40,6 +41,7 @@ public class Orders {
     @JoinColumn(name = "bookingId")
     Booking booking;
 
-    @OneToMany(mappedBy = "order")
-    Set<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    @JsonIgnore
+    List<OrderDetail> orderDetails;
 }

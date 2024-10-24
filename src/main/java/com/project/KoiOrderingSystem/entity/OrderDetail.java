@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,10 +16,12 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "orderId")
+    @JsonIgnore
     Orders order;
 
     @ManyToOne
     @JoinColumn(name = "koiId")
+    @JsonIgnore
     KoiFish koi;
 
 }

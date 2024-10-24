@@ -33,6 +33,7 @@ public class OrderService {
 
         Orders newOrder = new Orders();
         List<OrderDetail> orderDetails = new ArrayList<>();
+
         newOrder.setBooking(bookingService.getBookingById(orderRequest.getBookingId()));
         newOrder.setExpectedDate(orderRequest.getExpectedDate());
         newOrder.setStatus(orderRequest.getStatus());
@@ -47,6 +48,7 @@ public class OrderService {
             orderDetail.setKoi(koi);
             orderDetails.add(orderDetail);
         }
+        newOrder.setOrderDetails(orderDetails);
         orderRepository.save(newOrder);
 
         return newOrder;

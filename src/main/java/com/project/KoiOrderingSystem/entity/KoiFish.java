@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -47,5 +48,5 @@ public class KoiFish {
 
     @OneToMany(mappedBy = "koi")
     @JsonIgnore
-    Set<OrderDetail> orderDetails;
+    List<OrderDetail> orderDetails;
 }
