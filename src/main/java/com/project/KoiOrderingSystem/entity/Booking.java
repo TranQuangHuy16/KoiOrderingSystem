@@ -43,7 +43,6 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "accountId")
-    @JsonIgnore
     Account account;
 
     @ManyToOne
