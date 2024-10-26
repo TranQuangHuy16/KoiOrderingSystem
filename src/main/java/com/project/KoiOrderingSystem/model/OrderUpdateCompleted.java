@@ -11,7 +11,4 @@ public class OrderUpdateCompleted {
 
     @Column(nullable = true)
     String image;
-
-    @Column(nullable = true)
-    Date deliveredDate;
 }
