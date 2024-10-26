@@ -37,6 +37,8 @@ public class OrderService {
         newOrder.setBooking(bookingService.getBookingById(orderRequest.getBookingId()));
         newOrder.setExpectedDate(orderRequest.getExpectedDate());
         newOrder.setStatus(orderRequest.getStatus());
+        newOrder.setPrice(orderRequest.getPrice());
+        newOrder.setAddress(orderRequest.getAddress());
         Set<KoiFish> kois = new HashSet<>();
 
         for(OrderDetailRequest orderDetailRequest : orderRequest.getOrderDetails()) {

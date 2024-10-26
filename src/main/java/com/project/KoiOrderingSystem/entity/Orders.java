@@ -2,6 +2,7 @@ package com.project.KoiOrderingSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -31,6 +32,11 @@ public class Orders {
     @Column(nullable = true)
     Date deliveredDate;
 
+    @Min(value = 0, message = "Total must be greater than 0")
+    float price;
+
+    @Column(nullable = true)
+    String address;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
