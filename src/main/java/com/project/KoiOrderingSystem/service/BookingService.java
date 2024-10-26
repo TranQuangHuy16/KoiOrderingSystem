@@ -33,6 +33,9 @@ public class BookingService {
     @Autowired
     TripService tripService;
 
+    @Autowired
+    EmailService emailService;
+
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
         booking.setBookingDate(new Date());
@@ -58,6 +61,12 @@ public class BookingService {
     public Booking updateBooking(BookingUpdatePriceRequest bookingUpdatePriceRequest, long bookingId) {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setTotalPrice(bookingUpdatePriceRequest.getTotalPrice());
+
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(updatedbooking.getAccount());
+        emailDetail.setSubject("Welcome to Koi Ordering System");
+        emailService.sendEmailNotificatePayment(emailDetail);
+
         updatedbooking.setStatus(StatusBooking.AWAITING_PAYMENT);
         return bookingRepository.save(updatedbooking);
     }
