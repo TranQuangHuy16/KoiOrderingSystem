@@ -1,6 +1,8 @@
 package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Orders;
+import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
+import com.project.KoiOrderingSystem.model.OrderPaymentRequest;
 import com.project.KoiOrderingSystem.model.OrderRequest;
 import com.project.KoiOrderingSystem.model.OrderUpdateCompleted;
 import com.project.KoiOrderingSystem.service.OrderService;
@@ -45,5 +47,10 @@ public class OrderAPI {
         return ResponseEntity.ok(newOrder);
     }
 
+    @PostMapping("payment")
+    public ResponseEntity paymentBooking(@RequestBody OrderPaymentRequest orderPaymentRequest) throws Exception {
+        String url = bookingService.paymentBooking(bookingPaymentRequest);
+        return ResponseEntity.ok(url);
+    }
 
 }
