@@ -146,7 +146,7 @@ public class OrderService {
     public Orders updateOrderCompleted(long orderId, OrderUpdateCompleted orderUpdateCompleted) {
         Orders order = orderRepository.findOrderById(orderId);
         order.setImage(orderUpdateCompleted.getImage());
-        order.setDeliveredDate(orderUpdateCompleted.getDeliveredDate());
+        order.setDeliveredDate(new Date());
         order.setStatus(StatusOrder.COMPLETED);
         return orderRepository.save(order);
     }
