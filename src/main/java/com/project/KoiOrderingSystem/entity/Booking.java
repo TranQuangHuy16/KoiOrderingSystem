@@ -55,5 +55,9 @@ public class Booking {
 
     @OneToOne(mappedBy = "booking")
     @JsonIgnore
+    Feedback feedback;
+
+    @OneToOne(mappedBy = "booking")
+    @JsonIgnore
     Payment payment;
 }

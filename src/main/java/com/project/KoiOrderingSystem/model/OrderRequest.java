@@ -4,6 +4,7 @@ import com.project.KoiOrderingSystem.entity.StatusOrder;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,7 +21,13 @@ public class OrderRequest {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
     StatusOrder status;
 
+    @Column(nullable = true)
+    String address;
+
     long bookingId;
+
+    @Min(value = 0, message = "Total must be greater than 0")
+    float price;
 
     List<OrderDetailRequest> orderDetails;
 

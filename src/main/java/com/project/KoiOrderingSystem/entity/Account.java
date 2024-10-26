@@ -75,6 +75,9 @@ public class Account implements UserDetails {
     @JsonIgnore
     Set<Transactions> transactionsTo;
 
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    Set<Feedback> feedbacks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
