@@ -48,8 +48,8 @@ public class OrderAPI {
     }
 
     @PostMapping("payment")
-    public ResponseEntity paymentBooking(@RequestBody OrderPaymentRequest orderPaymentRequest) throws Exception {
-        String url = bookingService.paymentBooking(bookingPaymentRequest);
+    public ResponseEntity paymentOrder(@RequestBody OrderPaymentRequest orderPaymentRequest) throws Exception {
+        String url = orderService.paymentOrder(orderPaymentRequest);
         return ResponseEntity.ok(url);
     }
 
