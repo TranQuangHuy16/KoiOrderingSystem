@@ -26,4 +26,22 @@ public class DashboardAPI {
         return ResponseEntity.ok(stats);
     }
 
+    @GetMapping("/revenueBooking/month")
+    public ResponseEntity getRevenueBookingByMonth() {
+        Map<String, Object> revenue = managerService.getRevenueBookingByMonth();
+        return ResponseEntity.ok(revenue);
+    }
+
+    @GetMapping("/revenueOrder/month")
+    public ResponseEntity getRevenueOrderByMonth() {
+        Map<String, Object> revenue = managerService.getRevenueOrderByMonth();
+        return ResponseEntity.ok(revenue);
+    }
+
+    @GetMapping("/revenueAll/month")
+    public ResponseEntity getRevenueAllByMonth() {
+        Map<String, Object> revenue = managerService.getRevenueAllByMonth();
+        return ResponseEntity.ok(revenue);
+    }
+
 }

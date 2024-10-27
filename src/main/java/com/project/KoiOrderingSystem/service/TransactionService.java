@@ -2,11 +2,13 @@ package com.project.KoiOrderingSystem.service;
 
 import com.project.KoiOrderingSystem.entity.*;
 
+import com.project.KoiOrderingSystem.model.PaymentResponse;
 import com.project.KoiOrderingSystem.model.TransactionRespose;
 import com.project.KoiOrderingSystem.repository.AccountRepository;
 import com.project.KoiOrderingSystem.repository.OrderRepository;
 import com.project.KoiOrderingSystem.repository.PaymentRepository;
 import com.project.KoiOrderingSystem.repository.TransactionRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,9 @@ public class TransactionService {
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    ModelMapper modalMapper;
+
 
     public void createdTransactionBooking(long bookingId) {
 
@@ -60,6 +65,7 @@ public class TransactionService {
         transaction.setFrom(customer);
         transaction.setPayment(payment);
         transaction.setCreated_at(LocalDateTime.now());
+        transaction.setPrice(booking.getTotalPrice());
         transaction.setStatus(StatusTransactions.SUCCESS);
         transaction.setDescription("Payment for booking " + booking.getId());
 
@@ -89,6 +95,7 @@ public class TransactionService {
         transaction.setFrom(customer);
         transaction.setPayment(payment);
         transaction.setCreated_at(LocalDateTime.now());
+        transaction.setPrice(order.getPrice());
         transaction.setStatus(StatusTransactions.SUCCESS);
         transaction.setDescription("Payment for order " + order.getId());
 
@@ -108,8 +115,8 @@ public class TransactionService {
             transaction.setCreated_at(t.getCreated_at());
             transaction.setStatus(t.getStatus());
             transaction.setDescription(t.getDescription());
-            transaction.setPayment(t.getPayment());
-            transaction.setTo(t.getTo().getFirstName() + " " + t.getTo().getLastName());
+            transaction.setPaymentResponse(modalMapper.map(t.getPayment(), PaymentResponse.class));
+            transaction.setTo("Manager");
             transaction.setFrom(t.getFrom().getFirstName() + " " + t.getFrom().getLastName());
             transactionList.add(transaction);
         }
@@ -124,7 +131,7 @@ public class TransactionService {
             transaction.setCreated_at(t.getCreated_at());
             transaction.setStatus(t.getStatus());
             transaction.setDescription(t.getDescription());
-            transaction.setPayment(t.getPayment());
+            transaction.setPaymentResponse(modalMapper.map(t.getPayment(), PaymentResponse.class));
             transaction.setTo("Manager");
             transaction.setFrom(t.getFrom().getFirstName() + " " + t.getFrom().getLastName());
             transactionList.add(transaction);

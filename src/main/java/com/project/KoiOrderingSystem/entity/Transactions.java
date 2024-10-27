@@ -18,6 +18,8 @@ public class Transactions {
 
     LocalDateTime created_at;
 
+    float price;
+
     @ManyToOne
     @JoinColumn(name = "fromId")
     Account from;

@@ -18,5 +18,5 @@ public class TransactionRespose {
 
     String description;
 
-    Payment payment;
+    PaymentResponse paymentResponse;
 }
