@@ -17,6 +17,8 @@ public class Payment {
 
     Date created_at;
 
+    float price;
+
     @OneToOne
     @JoinColumn(name = "bookingId", nullable = true)
     @JsonIgnore

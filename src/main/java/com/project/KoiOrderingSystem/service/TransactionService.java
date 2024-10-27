@@ -49,6 +49,7 @@ public class TransactionService {
         Payment payment = new Payment();
         payment.setBooking(booking);
         payment.setCreated_at(new Date());
+        payment.setPrice(booking.getTotalPrice());
 
         Transactions transaction = new Transactions();
 
@@ -60,7 +61,7 @@ public class TransactionService {
         transaction.setPayment(payment);
         transaction.setCreated_at(LocalDateTime.now());
         transaction.setStatus(StatusTransactions.SUCCESS);
-        transaction.setDescription("Payment for booking" + booking.getId());
+        transaction.setDescription("Payment for booking " + booking.getId());
 
         paymentRepository.save(payment);
         transactionRepository.save(transaction);
@@ -77,6 +78,7 @@ public class TransactionService {
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setCreated_at(new Date());
+        payment.setPrice(order.getPrice());
 
         Transactions transaction = new Transactions();
 
@@ -88,7 +90,7 @@ public class TransactionService {
         transaction.setPayment(payment);
         transaction.setCreated_at(LocalDateTime.now());
         transaction.setStatus(StatusTransactions.SUCCESS);
-        transaction.setDescription("Payment for order" + order.getId());
+        transaction.setDescription("Payment for order " + order.getId());
 
         paymentRepository.save(payment);
         transactionRepository.save(transaction);

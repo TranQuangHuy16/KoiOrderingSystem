@@ -34,5 +34,4 @@ public class Transactions {
     StatusTransactions status;
 
     String description;
-
 }

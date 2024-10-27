@@ -19,6 +19,7 @@ public class OrderDetail {
     @JsonIgnore
     Orders order;
 
+
     @ManyToOne
     @JoinColumn(name = "koiId")
     @JsonIgnore
