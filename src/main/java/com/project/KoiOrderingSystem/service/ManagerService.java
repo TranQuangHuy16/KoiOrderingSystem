@@ -40,8 +40,8 @@ public class ManagerService {
         Map<String, Object> stats = new HashMap<>();
 
         stats.put("totalAccounts", accountRepository.countCustomerByRole(Role.CUSTOMER));
-        stats.put("totalKoi", koiRepository.count());
-        stats.put("totalFarm", farmRepository.count());
+        stats.put("totalKoi", koiRepository.findKoiFishesByIsDeletedFalse().stream().count());
+        stats.put("totalFarm", farmRepository.findFarmsByIsDeletedFalse().stream().count());
         stats.put("totalBooking", bookingRepository.count());
         stats.put("totalOrder", orderRepository.count());
 
