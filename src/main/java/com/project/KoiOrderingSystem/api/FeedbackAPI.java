@@ -4,6 +4,7 @@ import com.project.KoiOrderingSystem.entity.Feedback;
 import com.project.KoiOrderingSystem.model.FeedbackRequest;
 import com.project.KoiOrderingSystem.service.FeedbackService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class FeedbackAPI {
     FeedbackService feedbackService;
 
     @PostMapping
-    public ResponseEntity createFeedback(FeedbackRequest feedbackRequest) {
+    public ResponseEntity createFeedback(@Valid @RequestBody FeedbackRequest feedbackRequest) {
         Feedback feedback = feedbackService.createFeedback(feedbackRequest);
         return ResponseEntity.ok(feedback);
     }
