@@ -17,14 +17,14 @@ public class Payment {
 
     Date created_at;
 
+    float price;
+
     @OneToOne
     @JoinColumn(name = "bookingId", nullable = true)
-    @JsonIgnore
     Booking booking;
 
     @OneToOne
     @JoinColumn(name = "orderId", nullable = true)
-    @JsonIgnore
     Orders order;
 
     @OneToOne(mappedBy = "payment")
