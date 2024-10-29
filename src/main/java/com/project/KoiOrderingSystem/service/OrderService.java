@@ -70,7 +70,12 @@ public class OrderService {
 
         //code của mình
         Orders order = getOrderById(orderPaymentRequest.getId());
-        float money = order.getPrice() * 100;
+        float totalPrice = 0;
+        for(OrderDetail orderDetail : order.getOrderDetails()) {
+            totalPrice += orderDetail.getPrice() * orderDetail.getQuantity();
+        }
+        totalPrice += order.getPrice();
+        float money = totalPrice * 100;
         String amount = String.valueOf((int) money);
 
 
