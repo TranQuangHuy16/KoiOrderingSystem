@@ -2,6 +2,7 @@ package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Farm;
 import com.project.KoiOrderingSystem.model.FarmRequest;
+import com.project.KoiOrderingSystem.model.FarmResponse;
 import com.project.KoiOrderingSystem.service.FarmService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class FarmAPI {
 
     @GetMapping
     public ResponseEntity getAllFarm() {
-        List<Farm> farms = farmService.getAllFarm();
+        List<FarmResponse> farms = farmService.getAllFarm();
         return ResponseEntity.ok(farms);
     }
 
