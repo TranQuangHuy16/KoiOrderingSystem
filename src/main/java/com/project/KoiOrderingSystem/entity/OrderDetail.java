@@ -14,6 +14,8 @@ public class OrderDetail {
 
     int quantity;
 
+    float price;
+
     @ManyToOne
     @JoinColumn(name = "orderId")
     @JsonIgnore

@@ -4,12 +4,15 @@ import com.project.KoiOrderingSystem.entity.Farm;
 import com.project.KoiOrderingSystem.entity.KoiFish;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
 import com.project.KoiOrderingSystem.model.FarmRequest;
+import com.project.KoiOrderingSystem.model.FarmResponse;
+import com.project.KoiOrderingSystem.model.KoiFishResponse;
 import com.project.KoiOrderingSystem.repository.FarmRepository;
 import com.project.KoiOrderingSystem.repository.KoiRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,9 +37,22 @@ public class FarmService {
         return farm;
     }
 
-    public List<Farm> getAllFarm() {
-        List<Farm> farms = farmRepository.findFarmsByIsDeletedFalse();
-        return farms;
+    public List<FarmResponse> getAllFarm() {
+        List<FarmResponse> farmResponses = new ArrayList<>();
+
+        for(Farm farm : farmRepository.findAll()) {
+            FarmResponse farmResponse = modelMapper.map(farm, FarmResponse.class);
+            List<KoiFishResponse> koiFishResponseList = new ArrayList<>();
+
+            for(KoiFish koiFish : farm.getKoiFish()) {
+                koiFishResponseList.add(modelMapper.map(koiFish, KoiFishResponse.class));
+            }
+
+            farmResponse.setKoiFishResponseList(koiFishResponseList);
+            farmResponses.add(farmResponse);
+        }
+
+        return farmResponses;
     }
 
     public Farm updateFarm(long id, FarmRequest farmRequest) {

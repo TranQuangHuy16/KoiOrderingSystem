@@ -81,10 +81,16 @@ public class TransactionService {
             throw new RuntimeException("Order not found");
         }
 
+        float totalPrice = 0;
+        for(OrderDetail orderDetail : order.getOrderDetails()) {
+            totalPrice += orderDetail.getPrice() * orderDetail.getQuantity();
+        }
+        totalPrice += order.getPrice();
+
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setCreated_at(new Date());
-        payment.setPrice(order.getPrice());
+        payment.setPrice(totalPrice);
 
         Transactions transaction = new Transactions();
 
@@ -95,7 +101,7 @@ public class TransactionService {
         transaction.setFrom(customer);
         transaction.setPayment(payment);
         transaction.setCreated_at(LocalDateTime.now());
-        transaction.setPrice(order.getPrice());
+        transaction.setPrice(totalPrice);
         transaction.setStatus(StatusTransactions.SUCCESS);
         transaction.setDescription("Payment for order " + order.getId());
 

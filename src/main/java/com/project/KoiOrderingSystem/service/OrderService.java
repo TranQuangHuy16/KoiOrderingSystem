@@ -3,8 +3,7 @@ package com.project.KoiOrderingSystem.service;
 import com.project.KoiOrderingSystem.entity.*;
 import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.OrderRepository;
-import jakarta.validation.Valid;
-import org.hibernate.query.Order;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,9 @@ public class OrderService {
     @Autowired
     KoiService koiService;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     public Orders createOrder(OrderRequest orderRequest) {
 
         Orders newOrder = new Orders();
@@ -41,8 +43,8 @@ public class OrderService {
         newOrder.setBooking(bookingService.getBookingById(orderRequest.getBookingId()));
         newOrder.setExpectedDate(orderRequest.getExpectedDate());
         newOrder.setStatus(orderRequest.getStatus());
-        newOrder.setPrice(orderRequest.getPrice());
         newOrder.setAddress(orderRequest.getAddress());
+        newOrder.setPrice(orderRequest.getPrice());
         Set<KoiFish> kois = new HashSet<>();
 
         for(OrderDetailRequest orderDetailRequest : orderRequest.getOrderDetails()) {
@@ -52,6 +54,7 @@ public class OrderService {
             orderDetail.setQuantity(orderDetailRequest.getQuantity());
             orderDetail.setOrder(newOrder);
             orderDetail.setKoi(koi);
+            orderDetail.setPrice(koi.getPrice());
             orderDetails.add(orderDetail);
         }
         newOrder.setOrderDetails(orderDetails);
@@ -133,13 +136,39 @@ public class OrderService {
         return result.toString();
     }
 
-    public List<Orders> getAllOrder() {
-        return orderRepository.findAll();
+    public List<OrderResponse> getAllOrder() {
+        List<OrderResponse> listOrder = new ArrayList<>();
+
+        for(Orders order : orderRepository.findAll()) {
+            OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+            List<OrderDetailResponse> orderDetailResponseList = new ArrayList<>();
+            for(OrderDetail orderDetail : order.getOrderDetails()) {
+                OrderDetailResponse orderDetailResponse = modelMapper.map(orderDetail, OrderDetailResponse.class);
+                orderDetailResponse.setKoiFishResponse(modelMapper.map(orderDetail.getKoi(), KoiFishResponse.class));
+                orderDetailResponseList.add(orderDetailResponse);
+            }
+            orderResponse.setOrderDetailResponseList(orderDetailResponseList);
+            listOrder.add(orderResponse);
+        }
+        return  listOrder;
     }
 
-    public List<Orders> getOrdersByAccount() {
+    public List<OrderResponse> getOrdersByAccount() {
         Account account = authenticationService.getCurrentAccount();
-        return orderRepository.findOrdersByAccount(account);
+        List<OrderResponse> listOrder = new ArrayList<>();
+
+        for(Orders order : orderRepository.findOrdersByAccount(account)) {
+            OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+            List<OrderDetailResponse> orderDetailResponseList = new ArrayList<>();
+            for(OrderDetail orderDetail : order.getOrderDetails()) {
+                OrderDetailResponse orderDetailResponse = modelMapper.map(orderDetail, OrderDetailResponse.class);
+                orderDetailResponse.setKoiFishResponse(modelMapper.map(orderDetail.getKoi(), KoiFishResponse.class));
+                orderDetailResponseList.add(orderDetailResponse);
+            }
+            orderResponse.setOrderDetailResponseList(orderDetailResponseList);
+            listOrder.add(orderResponse);
+        }
+        return  listOrder;
     }
 
 

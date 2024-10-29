@@ -1,10 +1,7 @@
 package com.project.KoiOrderingSystem.api;
 
 import com.project.KoiOrderingSystem.entity.Orders;
-import com.project.KoiOrderingSystem.model.BookingPaymentRequest;
-import com.project.KoiOrderingSystem.model.OrderPaymentRequest;
-import com.project.KoiOrderingSystem.model.OrderRequest;
-import com.project.KoiOrderingSystem.model.OrderUpdateCompleted;
+import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.service.OrderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -31,13 +28,13 @@ public class OrderAPI {
 
     @GetMapping("/manager")
     public ResponseEntity getAllOrder() {
-        List<Orders> orderList = orderService.getAllOrder();
+        List<OrderResponse> orderList = orderService.getAllOrder();
         return ResponseEntity.ok(orderList);
     }
 
     @GetMapping("/customer")
     public ResponseEntity getOrderByAccount() {
-        List<Orders> orderList = orderService.getOrdersByAccount();
+        List<OrderResponse> orderList = orderService.getOrdersByAccount();
         return ResponseEntity.ok(orderList);
     }
 
