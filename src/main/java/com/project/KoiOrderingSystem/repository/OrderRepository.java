@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface OrderRepository extends JpaRepository<Orders, Long> {
+public interface OrderRepository extends JpaRepository<Orders, UUID> {
 
     @Query("SELECT o FROM Orders o WHERE o.booking.account = :account")
     List<Orders> findOrdersByAccount(@Param("account") Account account);
