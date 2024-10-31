@@ -40,7 +40,7 @@ public class FarmService {
     public List<FarmResponse> getAllFarm() {
         List<FarmResponse> farmResponses = new ArrayList<>();
 
-        for(Farm farm : farmRepository.findAll()) {
+        for(Farm farm : farmRepository.findFarmsByIsDeletedFalse()) {
             FarmResponse farmResponse = modelMapper.map(farm, FarmResponse.class);
             List<KoiFishResponse> koiFishResponseList = new ArrayList<>();
 
