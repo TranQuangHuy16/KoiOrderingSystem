@@ -16,10 +16,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class BookingService {
@@ -58,7 +55,7 @@ public class BookingService {
         return bookingList;
     }
 
-    public Booking updateBooking(BookingUpdatePriceRequest bookingUpdatePriceRequest, long bookingId) {
+    public Booking updateBooking(BookingUpdatePriceRequest bookingUpdatePriceRequest, UUID bookingId) {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setTotalPrice(bookingUpdatePriceRequest.getTotalPrice());
 
@@ -71,19 +68,19 @@ public class BookingService {
         return bookingRepository.save(updatedbooking);
     }
 
-    public Booking updateStatus(BookingStatusUpdateRequest bookingStatusUpdateRequest, long bookingId) {
+    public Booking updateStatus(BookingStatusUpdateRequest bookingStatusUpdateRequest, UUID bookingId) {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setStatus(bookingStatusUpdateRequest.getStatus());
         return bookingRepository.save(updatedbooking);
     }
 
-    public Booking updateCheckIn(CheckInRequest checkInRequest, long bookingId) {
+    public Booking updateCheckIn(CheckInRequest checkInRequest, UUID bookingId) {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setImage(checkInRequest.getImage());
         return bookingRepository.save(updatedbooking);
     }
 
-    public Booking getBookingById(long id) {
+    public Booking getBookingById(UUID id) {
         Booking booking = bookingRepository.findBookingById(id);
         return booking;
     }

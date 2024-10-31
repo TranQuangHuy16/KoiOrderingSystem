@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/order")
@@ -39,7 +40,7 @@ public class OrderAPI {
     }
 
     @PutMapping("{orderId}")
-    public ResponseEntity updateOrder(@PathVariable long orderId, @Valid @RequestBody OrderUpdateCompleted orderUpdateCompleted) {
+    public ResponseEntity updateOrder(@PathVariable UUID orderId, @Valid @RequestBody OrderUpdateCompleted orderUpdateCompleted) {
         Orders newOrder = orderService.updateOrderCompleted(orderId, orderUpdateCompleted);
         return ResponseEntity.ok(newOrder);
     }

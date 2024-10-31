@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -17,9 +18,9 @@ public class Orders {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    long id;
+    UUID id;
 
 
     @Column(nullable = true)
