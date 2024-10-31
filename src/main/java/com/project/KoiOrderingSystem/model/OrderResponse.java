@@ -7,11 +7,12 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class OrderResponse {
 
-    long id;
+    UUID id;
 
     String image;
 

@@ -10,6 +10,7 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class OrderRequest {
@@ -24,7 +25,7 @@ public class OrderRequest {
     @Column(nullable = true)
     String address;
 
-    long bookingId;
+    UUID bookingId;
 
     @Min(value = 0, message = "Total must be greater than 0")
     float price;

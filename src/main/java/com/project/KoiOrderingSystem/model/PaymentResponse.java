@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class PaymentResponse {
@@ -14,7 +15,7 @@ public class PaymentResponse {
 
     float price;
 
-    long bookingId;
+    UUID bookingId;
 
-    long orderId;
+    UUID orderId;
 }

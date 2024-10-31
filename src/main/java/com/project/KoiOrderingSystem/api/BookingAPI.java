@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -40,13 +41,13 @@ public class BookingAPI {
     }
 
     @PutMapping("/price/{bookingId}")
-    public ResponseEntity updateBooking(@Valid @RequestBody BookingUpdatePriceRequest bookingUpdatePriceRequest, @PathVariable long bookingId) {
+    public ResponseEntity updateBooking(@Valid @RequestBody BookingUpdatePriceRequest bookingUpdatePriceRequest, @PathVariable UUID bookingId) {
         Booking booking = bookingService.updateBooking(bookingUpdatePriceRequest, bookingId);
         return ResponseEntity.ok(booking);
     }
 
     @PutMapping("/status/{bookingId}")
-    public ResponseEntity updateStatus(@Valid @RequestBody BookingStatusUpdateRequest bookingStatusUpdateRequest, @PathVariable long bookingId) {
+    public ResponseEntity updateStatus(@Valid @RequestBody BookingStatusUpdateRequest bookingStatusUpdateRequest, @PathVariable UUID bookingId) {
         Booking booking = bookingService.updateStatus(bookingStatusUpdateRequest, bookingId);
         return ResponseEntity.ok(booking);
     }
@@ -58,7 +59,7 @@ public class BookingAPI {
     }
 
     @PutMapping("/check-in/{bookingId}")
-    public ResponseEntity updateBooking(@Valid @RequestBody CheckInRequest checkInRequest, @PathVariable long bookingId) {
+    public ResponseEntity updateBooking(@Valid @RequestBody CheckInRequest checkInRequest, @PathVariable UUID bookingId) {
         Booking booking = bookingService.updateCheckIn(checkInRequest, bookingId);
         return ResponseEntity.ok(booking);
     }

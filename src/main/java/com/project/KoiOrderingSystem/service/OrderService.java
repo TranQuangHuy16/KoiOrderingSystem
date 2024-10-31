@@ -177,7 +177,7 @@ public class OrderService {
     }
 
 
-    public Orders updateOrderCompleted(long orderId, OrderUpdateCompleted orderUpdateCompleted) {
+    public Orders updateOrderCompleted(UUID orderId, OrderUpdateCompleted orderUpdateCompleted) {
         Orders order = orderRepository.findOrderById(orderId);
         order.setImage(orderUpdateCompleted.getImage());
         order.setDeliveredDate(new Date());
@@ -185,7 +185,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Orders getOrderById(long id) {
+    public Orders getOrderById(UUID id) {
         return orderRepository.findOrderById(id);
     }
 }

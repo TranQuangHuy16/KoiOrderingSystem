@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class FeedbackRequest {
@@ -21,5 +22,5 @@ public class FeedbackRequest {
     @Size(min = 2, max = 255, message = "Comment must be between 2 and 255 characters")
     String comment;
 
-    long bookingId;
+    UUID bookingId;
 }

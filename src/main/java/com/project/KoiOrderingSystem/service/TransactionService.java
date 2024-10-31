@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -44,7 +45,7 @@ public class TransactionService {
     ModelMapper modalMapper;
 
 
-    public void createdTransactionBooking(long bookingId) {
+    public void createdTransactionBooking(UUID bookingId) {
 
         Booking booking = bookingService.getBookingById(bookingId);
         if(booking == null) {
@@ -74,7 +75,7 @@ public class TransactionService {
 
     }
 
-    public void createdTransactionOrder(long orderId) {
+    public void createdTransactionOrder(UUID orderId) {
 
         Orders order = orderService.getOrderById(orderId);
         if (order == null) {

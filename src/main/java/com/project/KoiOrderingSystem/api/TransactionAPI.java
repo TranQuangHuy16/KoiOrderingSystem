@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transaction")
@@ -22,13 +23,13 @@ public class TransactionAPI {
     TransactionService transactionService;
 
     @PostMapping("/booking")
-    public ResponseEntity createTransactionBooking(@RequestParam long bookingId) {
+    public ResponseEntity createTransactionBooking(@RequestParam UUID bookingId) {
         transactionService.createdTransactionBooking(bookingId);
         return ResponseEntity.ok("Success");
     }
 
     @PostMapping("/order")
-    public ResponseEntity createTransactionOrder(@RequestParam long orderId) {
+    public ResponseEntity createTransactionOrder(@RequestParam UUID orderId) {
         transactionService.createdTransactionOrder(orderId);
         return ResponseEntity.ok("Success");
     }
