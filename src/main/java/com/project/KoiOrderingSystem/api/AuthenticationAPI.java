@@ -40,6 +40,12 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(accounts);
     }
 
+    @PostMapping("/login-google")
+    private ResponseEntity checkLoginGoogle(@RequestBody LoginGoogleRequest loginGGRequest){
+        AccountResponse accountResponse = authenticationService.loginGoogle(loginGGRequest);
+        return ResponseEntity.ok(accountResponse);
+    }
+
 //    @GetMapping("{accountId}")
 //    public ResponseEntity viewProfile(@PathVariable long accountId){
 //        AccountResponse profileAccount = authenticationService.viewProfile(accountId);

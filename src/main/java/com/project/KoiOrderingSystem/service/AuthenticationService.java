@@ -1,6 +1,10 @@
 package com.project.KoiOrderingSystem.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.project.KoiOrderingSystem.entity.Account;
+import com.project.KoiOrderingSystem.entity.Role;
 import com.project.KoiOrderingSystem.exception.DuplicateEntity;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
 import com.project.KoiOrderingSystem.model.*;
@@ -82,6 +86,29 @@ public class AuthenticationService implements UserDetailsService {
             throw new EntityNotFoundException("Username or password invalid");
         }
     }
+
+    public AccountResponse loginGoogle (LoginGoogleRequest loginGoogleRequest) {
+        try{
+            FirebaseToken decodeToken = FirebaseAuth.getInstance().verifyIdToken(loginGoogleRequest.getToken());
+            String email = decodeToken.getEmail();
+            Account user = accountRepository.findAccountByEmail(email);
+            if(user == null) {
+                user.setFirstName(decodeToken.getName());
+                user.setEmail(email);
+                user.setUsername(email);
+                user.setRole(Role.CUSTOMER);
+                user = accountRepository.save(user);
+            }
+            AccountResponse accountResponse = modelMapper.map(user, AccountResponse.class);
+            accountResponse.setToken(tokenService.generateToken(user));
+            return accountResponse;
+        } catch (FirebaseAuthException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest){
         Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
         if(account == null) throw new EntityNotFoundException("Email not exist!");
