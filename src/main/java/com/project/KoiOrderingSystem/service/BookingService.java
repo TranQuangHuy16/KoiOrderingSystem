@@ -2,6 +2,7 @@ package com.project.KoiOrderingSystem.service;
 
 import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.entity.Booking;
+import com.project.KoiOrderingSystem.entity.Feedback;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
 import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
@@ -51,7 +52,13 @@ public class BookingService {
     public List<BookingResponseManager> getAllBooking() {
         List<BookingResponseManager> bookingList = new ArrayList<>();
         for(Booking booking : bookingRepository.findAll()) {
-            FeedbackResponse feedbackResponse = modelMapper.map(booking.getFeedback(), FeedbackResponse.class);
+            Feedback feedback = booking.getFeedback();
+            FeedbackResponse feedbackResponse;
+            if(feedback != null) {
+                feedbackResponse = modelMapper.map(booking.getFeedback(), FeedbackResponse.class);
+            } else {
+                feedbackResponse = null;
+            }
             BookingResponseManager bookingResponseManager = modelMapper.map(booking, BookingResponseManager.class);
             bookingResponseManager.setFeedbackResponse(feedbackResponse);
             bookingList.add(bookingResponseManager);

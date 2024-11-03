@@ -28,5 +28,6 @@ public class BookingResponseManager {
 
     Trip trip;
 
+    @Column(nullable = true)
     FeedbackResponse FeedbackResponse;
 }
