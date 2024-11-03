@@ -95,6 +95,7 @@ public class BookingService {
         float money = booking.getTotalPrice() * 100;
         String amount = String.valueOf((int) money);
 
+        UUID randomUUID = UUID.randomUUID();
 
 
         String tmnCode = "J8GSGBC5";
@@ -109,8 +110,8 @@ public class BookingService {
         vnpParams.put("vnp_TmnCode", tmnCode);
         vnpParams.put("vnp_Locale", "vn");
         vnpParams.put("vnp_CurrCode", currCode);
-        vnpParams.put("vnp_TxnRef", String.valueOf(bookingPaymentRequest.getId()));
-        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + bookingPaymentRequest.getId());
+        vnpParams.put("vnp_TxnRef", String.valueOf(randomUUID));
+        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + randomUUID);
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount",amount);
 
