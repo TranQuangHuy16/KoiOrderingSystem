@@ -5,6 +5,7 @@ import com.project.KoiOrderingSystem.entity.Booking;
 import com.project.KoiOrderingSystem.entity.StatusBooking;
 import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.repository.BookingRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,9 @@ public class BookingService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     public Booking createBooking(BookingRequest bookingRequest) {
         Booking booking = new Booking();
         booking.setBookingDate(new Date());
@@ -44,8 +48,14 @@ public class BookingService {
         return bookingRepository.save(booking);
     }
 
-    public List<Booking> getAllBooking() {
-        List<Booking> bookingList = bookingRepository.findAll();
+    public List<BookingResponseManager> getAllBooking() {
+        List<BookingResponseManager> bookingList = new ArrayList<>();
+        for(Booking booking : bookingRepository.findAll()) {
+            FeedbackResponse feedbackResponse = modelMapper.map(booking.getFeedback(), FeedbackResponse.class);
+            BookingResponseManager bookingResponseManager = modelMapper.map(booking, BookingResponseManager.class);
+            bookingResponseManager.setFeedbackResponse(feedbackResponse);
+            bookingList.add(bookingResponseManager);
+        }
         return bookingList;
     }
 

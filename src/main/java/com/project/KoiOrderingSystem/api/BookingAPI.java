@@ -30,7 +30,7 @@ public class BookingAPI {
 
     @GetMapping("/manager")
     public ResponseEntity getAllBooking() {
-        List<Booking> bookingList = bookingService.getAllBooking();
+        List<BookingResponseManager> bookingList = bookingService.getAllBooking();
         return ResponseEntity.ok(bookingList);
     }
 
