@@ -57,7 +57,7 @@ public class AuthenticationService implements UserDetailsService {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(account);
             emailDetail.setSubject("Welcome to Koi Ordering System");
-            emailDetail.setLink("https://blearning.vn");
+            emailDetail.setLink("http://localhost:5173/");
             emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
