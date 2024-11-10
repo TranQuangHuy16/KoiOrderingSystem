@@ -65,14 +65,38 @@ public class EmailService {
         }
     }
 
-    public void sendEmailNotificatePayment(EmailDetail emailDetail){
+    public void sendEmailNotificatePaymentBooking(EmailDetail emailDetail){
         try{
             Context context = new Context();
             context.setVariable("name", emailDetail.getReceiver().getEmail());
             context.setVariable("button", "Go to Payment page");
             context.setVariable("link", emailDetail.getLink());
 
-            String template = templateEngine.process("notificatePayment", context);
+            String template = templateEngine.process("notificatePaymentBooking", context);
+
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+
+
+            mimeMessageHelper.setFrom("koiorderingsystem@gmail.com");
+            mimeMessageHelper.setTo(emailDetail.getReceiver().getEmail());
+            mimeMessageHelper.setText(template, true);
+            mimeMessageHelper.setSubject(emailDetail.getSubject());
+
+            javaMailSender.send(mimeMessage);
+        }catch (MessagingException e){
+            System.out.println("ERROR SEND MAIL!");
+        }
+    }
+
+    public void sendEmailNotificatePaymentOrder(EmailDetail emailDetail){
+        try{
+            Context context = new Context();
+            context.setVariable("name", emailDetail.getReceiver().getEmail());
+            context.setVariable("button", "Go to Payment page");
+            context.setVariable("link", emailDetail.getLink());
+
+            String template = templateEngine.process("notificatePaymentOrder", context);
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);

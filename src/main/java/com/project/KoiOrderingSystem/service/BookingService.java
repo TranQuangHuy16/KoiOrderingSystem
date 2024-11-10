@@ -78,8 +78,8 @@ public class BookingService {
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setReceiver(updatedbooking.getAccount());
-        emailDetail.setSubject("Welcome to Koi Ordering System");
-        emailService.sendEmailNotificatePayment(emailDetail);
+        emailDetail.setSubject("Notification for payment booking");
+        emailService.sendEmailNotificatePaymentBooking(emailDetail);
 
         updatedbooking.setStatus(StatusBooking.AWAITING_PAYMENT);
         return bookingRepository.save(updatedbooking);

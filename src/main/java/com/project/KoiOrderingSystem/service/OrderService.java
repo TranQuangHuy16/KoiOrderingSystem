@@ -35,6 +35,9 @@ public class OrderService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    EmailService emailService;
+
     public Orders createOrder(OrderRequest orderRequest) {
 
         Orders newOrder = new Orders();
@@ -58,6 +61,10 @@ public class OrderService {
             orderDetails.add(orderDetail);
         }
         newOrder.setOrderDetails(orderDetails);
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(newOrder.getBooking().getAccount());
+        emailDetail.setSubject("Notification for payment Order");
+        emailService.sendEmailNotificatePaymentBooking(emailDetail);
         orderRepository.save(newOrder);
 
         return newOrder;
