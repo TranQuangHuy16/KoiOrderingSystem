@@ -32,7 +32,7 @@ public class TripService {
         newtrip.setEndDate(tripRequest.getEndDate());
         newtrip.setStartLocation(tripRequest.getStartLocation());
         newtrip.setEndLocation(tripRequest.getEndLocation());
-
+        newtrip.setPrice(tripRequest.getPrice());
         Set<Farm> farmList = new HashSet<>();
         for (Long farmIds : tripRequest.getFarmIds()) {
             Farm farm = farmRepository.findFarmById(farmIds);
@@ -68,7 +68,7 @@ public class TripService {
         trip.setEndDate(tripRequest.getEndDate());
         trip.setStartLocation(tripRequest.getStartLocation());
         trip.setEndLocation(tripRequest.getEndLocation());
-
+        trip.setPrice(tripRequest.getPrice());
         Set<Farm> farmList = new HashSet<>();
         for (Long farmIds : tripRequest.getFarmIds()) {
             Farm farm = farmRepository.findFarmById(farmIds);

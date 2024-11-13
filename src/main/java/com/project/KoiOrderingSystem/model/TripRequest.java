@@ -22,6 +22,8 @@ public class TripRequest {
     @Column(nullable = false)
     String endLocation;
 
+    float price;
+
     Set<Long> farmIds;
 
 }

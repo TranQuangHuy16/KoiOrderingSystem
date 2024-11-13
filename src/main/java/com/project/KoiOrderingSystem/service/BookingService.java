@@ -43,6 +43,7 @@ public class BookingService {
         booking.setBookingDate(new Date());
         booking.setStatus(bookingRequest.getStatus());
         booking.setNote(bookingRequest.getNote());
+        booking.setQuantity(bookingRequest.getQuantity());
         Account account = authenticationService.getCurrentAccount();
         booking.setAccount(account);
         booking.setTrip(tripService.getTripById(bookingRequest.getTripId()));
@@ -74,14 +75,38 @@ public class BookingService {
 
     public Booking updateBooking(BookingUpdatePriceRequest bookingUpdatePriceRequest, UUID bookingId) {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
-        updatedbooking.setTotalPrice(bookingUpdatePriceRequest.getTotalPrice());
-
+        updatedbooking.setTicketPrice(bookingUpdatePriceRequest.getTicketPrice());
+        float total = updatedbooking.getTicketPrice() * updatedbooking.getQuantity() + updatedbooking.getTrip().getPrice();
+        updatedbooking.setTotalPrice(total);
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setReceiver(updatedbooking.getAccount());
         emailDetail.setSubject("Notification for payment booking");
         emailService.sendEmailNotificatePaymentBooking(emailDetail);
 
         updatedbooking.setStatus(StatusBooking.AWAITING_PAYMENT);
+        return bookingRepository.save(updatedbooking);
+    }
+
+    public Booking cancleWithNoRefund(UUID bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setStatus(StatusBooking.CANCEL);
+        updatedbooking.setCancelDate(new Date());
+        return bookingRepository.save(updatedbooking);
+    }
+
+    public Booking cancleWithRefund(RefundRequest refundRequest ,UUID bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        updatedbooking.setRefundImage(refundRequest.getRefundImage());
+        updatedbooking.setStatus(StatusBooking.CANCEL);
+        return bookingRepository.save(updatedbooking);
+    }
+
+    public Booking provideRefundAccount(RefundAccountRequest refundAccountRequest, UUID bookingId) {
+        Booking updatedbooking = bookingRepository.findBookingById(bookingId);
+        String note = refundAccountRequest.getBankName() + " - " + refundAccountRequest.getAccountNumber() + " - " + refundAccountRequest.getAccountName();
+        updatedbooking.setNote(note);
+        updatedbooking.setStatus(StatusBooking.AWAITING_REFUND);
+        updatedbooking.setCancelDate(new Date());
         return bookingRepository.save(updatedbooking);
     }
 

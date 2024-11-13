@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,9 @@ public class Trip {
 
     @Column(nullable = false)
     String endLocation;
+
+    @Min(value = 0, message = "Trip price must be more than 0")
+    float price;
 
     @JsonIgnore
     boolean isDeleted = false;

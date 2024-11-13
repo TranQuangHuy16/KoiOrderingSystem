@@ -28,8 +28,13 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @Min(value = 0, message = "Total Price must be more than 0")
+    @Min(value = 0, message = "Price must be more than 0")
+    @Column(nullable = true)
     float totalPrice;
+
+    @Min(value = 0, message = "Ticket price must be more than 0")
+    @Column(nullable = true)
+    float ticketPrice;
 
     @Column(nullable = true)
     String image;

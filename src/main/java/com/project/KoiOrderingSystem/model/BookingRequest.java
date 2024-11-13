@@ -17,6 +17,9 @@ public class BookingRequest {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
     StatusBooking status;
 
+    @Min(value = 1, message = "Quantity must be more than 1")
+    int quantity;
+
     @Column(nullable = true)
     String note;
 
