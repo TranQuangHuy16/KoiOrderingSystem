@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +34,16 @@ public class Booking {
     @Column(nullable = true)
     String image;
 
+    @Column(nullable = true)
+    String refundImage;
+
     Date bookingDate;
+
+    @Column(nullable = true)
+    Date cancelDate;
+
+    @Min(value = 1, message = "Quantity must be more than 1")
+    int quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
