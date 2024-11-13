@@ -47,13 +47,8 @@ public class Trip {
     @JsonIgnore
     boolean isDeleted = false;
 
-    @ManyToMany
-    @JoinTable (
-            name = "tripFarm",
-            joinColumns = @JoinColumn(name = "tripId"),
-            inverseJoinColumns = @JoinColumn(name = "farmId")
-    )
-    Set<Farm> farms;
+    @OneToMany(mappedBy = "trip")
+    Set<TripDetail> tripDetails;
 
     @OneToMany(mappedBy = "trip")
     @JsonIgnore

@@ -19,11 +19,11 @@ public class Payment {
 
     float price;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "bookingId", nullable = true)
     Booking booking;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "orderId", nullable = true)
     Orders order;
 

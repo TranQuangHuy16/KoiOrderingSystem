@@ -52,7 +52,7 @@ public class Orders {
 //    @JsonIgnore
     List<OrderDetail> orderDetails;
 
-    @OneToOne(mappedBy = "order")
+    @OneToMany(mappedBy = "order")
     @JsonIgnore
-    Payment payment;
+    List<Payment> payments;
 }

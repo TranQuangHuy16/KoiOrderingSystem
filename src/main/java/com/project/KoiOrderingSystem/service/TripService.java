@@ -3,9 +3,12 @@ package com.project.KoiOrderingSystem.service;
 
 import com.project.KoiOrderingSystem.entity.Farm;
 import com.project.KoiOrderingSystem.entity.Trip;
+import com.project.KoiOrderingSystem.entity.TripDetail;
 import com.project.KoiOrderingSystem.exception.EntityNotFoundException;
+import com.project.KoiOrderingSystem.model.TripDetailRequest;
 import com.project.KoiOrderingSystem.model.TripRequest;
 import com.project.KoiOrderingSystem.repository.FarmRepository;
+import com.project.KoiOrderingSystem.repository.TripDetailRespository;
 import com.project.KoiOrderingSystem.repository.TripRespository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class TripService {
     @Autowired
     FarmRepository farmRepository;
 
+    @Autowired
+    TripDetailRespository tripDetailRespository;
+
     public Trip createTrip(TripRequest tripRequest) {
         Trip newtrip = new Trip();
         newtrip.setStartDate(tripRequest.getStartDate());
@@ -33,17 +39,25 @@ public class TripService {
         newtrip.setStartLocation(tripRequest.getStartLocation());
         newtrip.setEndLocation(tripRequest.getEndLocation());
         newtrip.setPrice(tripRequest.getPrice());
-        Set<Farm> farmList = new HashSet<>();
-        for (Long farmIds : tripRequest.getFarmIds()) {
-            Farm farm = farmRepository.findFarmById(farmIds);
+        Set<TripDetail> tripDetails = new HashSet<>();
+        tripRespository.save(newtrip);
+
+        for (TripDetailRequest tripDetail : tripRequest.getTripDetailRequests()) {
+            Farm farm = farmRepository.findFarmByIdAndIsDeletedFalse(tripDetail.getFarmId());
             if(farm == null) {
                 throw new EntityNotFoundException("Farm not found");
             }
-
-            farmList.add(farm);
-
+            if (tripDetail.getTravelDate().isBefore(newtrip.getStartDate()) || tripDetail.getTravelDate().isAfter(newtrip.getEndDate())) {
+                throw new EntityNotFoundException("Travel date must be between start date and end date");
+            }
+            TripDetail newTripDetail = new TripDetail();
+            newTripDetail.setFarm(farm);
+            newTripDetail.setTravelDate(tripDetail.getTravelDate());
+            newTripDetail.setTrip(newtrip);
+            tripDetailRespository.save(newTripDetail);
+            tripDetails.add(newTripDetail);
         }
-        newtrip.setFarms(farmList);
+        newtrip.setTripDetails(tripDetails);
         tripRespository.save(newtrip);
         return newtrip;
     }
@@ -69,18 +83,22 @@ public class TripService {
         trip.setStartLocation(tripRequest.getStartLocation());
         trip.setEndLocation(tripRequest.getEndLocation());
         trip.setPrice(tripRequest.getPrice());
-        Set<Farm> farmList = new HashSet<>();
-        for (Long farmIds : tripRequest.getFarmIds()) {
-            Farm farm = farmRepository.findFarmById(farmIds);
+        Set<TripDetail> tripDetails = new HashSet<>();
+        tripDetailRespository.deleteTripDetailsByTripId(trip.getId());
+
+        for (TripDetailRequest tripDetail : tripRequest.getTripDetailRequests()) {
+            Farm farm = farmRepository.findFarmByIdAndIsDeletedFalse(tripDetail.getFarmId());
             if(farm == null) {
                 throw new EntityNotFoundException("Farm not found");
             }
-
-            farmList.add(farm);
-
+            TripDetail newTripDetail = new TripDetail();
+            newTripDetail.setFarm(farm);
+            newTripDetail.setTravelDate(tripDetail.getTravelDate());
+            newTripDetail.setTrip(trip);
+            tripDetailRespository.save(newTripDetail);
+            tripDetails.add(newTripDetail);
         }
-        trip.setFarms(farmList);
-
+        trip.setTripDetails(tripDetails);
         return tripRespository.save(trip);
     }
 

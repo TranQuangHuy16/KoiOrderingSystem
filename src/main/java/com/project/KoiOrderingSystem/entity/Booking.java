@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -73,7 +74,7 @@ public class Booking {
     @JsonIgnore
     Feedback feedback;
 
-    @OneToOne(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking")
     @JsonIgnore
-    Payment payment;
+    List<Payment> payments;
 }

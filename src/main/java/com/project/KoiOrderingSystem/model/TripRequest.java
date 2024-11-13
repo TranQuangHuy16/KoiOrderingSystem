@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.model;
 
+import com.project.KoiOrderingSystem.entity.TripDetail;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -24,6 +25,6 @@ public class TripRequest {
 
     float price;
 
-    Set<Long> farmIds;
+    Set<TripDetailRequest> tripDetailRequests;
 
 }
