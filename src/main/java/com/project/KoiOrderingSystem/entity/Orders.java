@@ -26,6 +26,7 @@ public class Orders {
     @Column(nullable = true)
     String image;
 
+    Date orderDate;
 
     LocalDate expectedDate;
 

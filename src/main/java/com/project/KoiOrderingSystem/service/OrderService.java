@@ -48,6 +48,7 @@ public class OrderService {
         newOrder.setStatus(orderRequest.getStatus());
         newOrder.setAddress(orderRequest.getAddress());
         newOrder.setPrice(orderRequest.getPrice());
+        newOrder.setOrderDate(new Date());
         Set<KoiFish> kois = new HashSet<>();
 
         for(OrderDetailRequest orderDetailRequest : orderRequest.getOrderDetails()) {
@@ -64,7 +65,7 @@ public class OrderService {
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setReceiver(newOrder.getBooking().getAccount());
         emailDetail.setSubject("Notification for payment Order");
-        emailService.sendEmailNotificatePaymentBooking(emailDetail);
+        emailService.sendEmailNotificatePaymentOrder(emailDetail);
         orderRepository.save(newOrder);
 
         return newOrder;
