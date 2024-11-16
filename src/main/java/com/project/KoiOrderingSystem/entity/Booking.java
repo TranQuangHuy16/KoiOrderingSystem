@@ -37,7 +37,8 @@ public class Booking {
     @Column(nullable = true)
     float ticketPrice;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Lob
     String image;
 
     @Column(nullable = true)
