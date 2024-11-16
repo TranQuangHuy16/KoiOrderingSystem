@@ -98,6 +98,13 @@ public class BookingService {
         Booking updatedbooking = bookingRepository.findBookingById(bookingId);
         updatedbooking.setRefundImage(refundRequest.getRefundImage());
         updatedbooking.setStatus(StatusBooking.CANCEL);
+
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(updatedbooking.getAccount());
+        emailDetail.setSubject("Notification for refund booking");
+        emailService.sendEmailNotificateRefundBooking(emailDetail, refundRequest.getRefundImage());
+
+
         return bookingRepository.save(updatedbooking);
     }
 
