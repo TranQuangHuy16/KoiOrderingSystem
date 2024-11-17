@@ -50,7 +50,7 @@ public class Farm {
     @JsonIgnore
     boolean isDeleted = false;
 
-    @ManyToMany(mappedBy = "farms")
+    @OneToMany(mappedBy = "farm")
     @JsonIgnore
-    Set<Trip> trips;
+    Set<TripDetail> tripDetails;
 }

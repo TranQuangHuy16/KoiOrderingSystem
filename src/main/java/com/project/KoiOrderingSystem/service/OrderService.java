@@ -35,6 +35,9 @@ public class OrderService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    EmailService emailService;
+
     public Orders createOrder(OrderRequest orderRequest) {
 
         Orders newOrder = new Orders();
@@ -45,6 +48,7 @@ public class OrderService {
         newOrder.setStatus(orderRequest.getStatus());
         newOrder.setAddress(orderRequest.getAddress());
         newOrder.setPrice(orderRequest.getPrice());
+        newOrder.setOrderDate(new Date());
         Set<KoiFish> kois = new HashSet<>();
 
         for(OrderDetailRequest orderDetailRequest : orderRequest.getOrderDetails()) {
@@ -58,6 +62,10 @@ public class OrderService {
             orderDetails.add(orderDetail);
         }
         newOrder.setOrderDetails(orderDetails);
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(newOrder.getBooking().getAccount());
+        emailDetail.setSubject("Notification for payment Order");
+        emailService.sendEmailNotificatePaymentOrder(emailDetail);
         orderRepository.save(newOrder);
 
         return newOrder;

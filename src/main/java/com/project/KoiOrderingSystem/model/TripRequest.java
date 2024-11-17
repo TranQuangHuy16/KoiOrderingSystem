@@ -1,5 +1,6 @@
 package com.project.KoiOrderingSystem.model;
 
+import com.project.KoiOrderingSystem.entity.TripDetail;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -22,6 +23,8 @@ public class TripRequest {
     @Column(nullable = false)
     String endLocation;
 
-    Set<Long> farmIds;
+    float price;
+
+    Set<TripDetailRequest> tripDetailRequests;
 
 }

@@ -25,14 +25,21 @@ public class TransactionAPI {
     @PostMapping("/booking")
     public ResponseEntity createTransactionBooking(@RequestParam UUID bookingId) {
         transactionService.createdTransactionBooking(bookingId);
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Payment Success");
     }
 
     @PostMapping("/order")
     public ResponseEntity createTransactionOrder(@RequestParam UUID orderId) {
         transactionService.createdTransactionOrder(orderId);
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Payment Success");
     }
+
+    @PostMapping("/refundBooking")
+    public ResponseEntity createTransactionRefundBooking(@RequestParam UUID bookingId) {
+        transactionService.createdTransactionRefundBooking(bookingId);
+        return ResponseEntity.ok("Refund Success");
+    }
+
 
     @GetMapping("/manager")
     public ResponseEntity getTransactionByManager() {

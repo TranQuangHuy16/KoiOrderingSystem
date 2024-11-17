@@ -14,4 +14,10 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     Booking findBookingById(UUID bookingId);
 
+    @Query("SELECT YEAR(b.bookingDate) as year, MONTH(b.bookingDate) as month, COUNT(b) as QuantityOfMonth " +
+            "FROM Booking b " +
+            "WHERE b.status = 'COMPLETED' " +
+            "GROUP BY YEAR(b.bookingDate), MONTH(b.bookingDate) " +
+            "ORDER BY YEAR(b.bookingDate), MONTH(b.bookingDate)")
+    List<Object[]> getBookingByMonth();
 }

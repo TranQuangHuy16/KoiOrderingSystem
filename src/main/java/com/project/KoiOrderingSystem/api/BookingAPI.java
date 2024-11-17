@@ -40,11 +40,30 @@ public class BookingAPI {
         return ResponseEntity.ok(bookingList);
     }
 
+    @PutMapping("/cancle/no-refund/{bookingId}")
+    public ResponseEntity cancleWithNoRefund(@PathVariable UUID bookingId) {
+        Booking booking = bookingService.cancleWithNoRefund(bookingId);
+        return ResponseEntity.ok(booking);
+    }
+
+    @PutMapping("/provide-refund-account/{bookingId}")
+    public ResponseEntity provideRefundAccount(@Valid @RequestBody RefundAccountRequest refundAccountRequest,@PathVariable UUID bookingId) {
+        Booking booking = bookingService.provideRefundAccount(refundAccountRequest, bookingId);
+        return ResponseEntity.ok(booking);
+    }
+
+    @PutMapping("/cancle/refund/{bookingId}")
+    public ResponseEntity cancleWithRefund(@Valid @RequestBody RefundRequest refundRequest, @PathVariable UUID bookingId) {
+        Booking booking = bookingService.cancleWithRefund(refundRequest, bookingId);
+        return ResponseEntity.ok(booking);
+    }
+
     @PutMapping("/price/{bookingId}")
     public ResponseEntity updateBooking(@Valid @RequestBody BookingUpdatePriceRequest bookingUpdatePriceRequest, @PathVariable UUID bookingId) {
         Booking booking = bookingService.updateBooking(bookingUpdatePriceRequest, bookingId);
         return ResponseEntity.ok(booking);
     }
+
 
     @PutMapping("/status/{bookingId}")
     public ResponseEntity updateStatus(@Valid @RequestBody BookingStatusUpdateRequest bookingStatusUpdateRequest, @PathVariable UUID bookingId) {

@@ -15,4 +15,11 @@ public interface OrderRepository extends JpaRepository<Orders, UUID> {
     List<Orders> findOrdersByAccount(@Param("account") Account account);
 
     Orders findOrderById(UUID orderId);
+
+    @Query("SELECT YEAR(o.orderDate) as year, MONTH(o.orderDate) as month, COUNT(o) as QuantityOfMonth " +
+            "FROM Orders o " +
+            "WHERE o.status = 'COMPLETED' " +
+            "GROUP BY YEAR(o.orderDate), MONTH(o.orderDate) " +
+            "ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)")
+    List<Object[]> getOrderByMonth();
 }

@@ -114,6 +114,37 @@ public class TransactionService {
 
     }
 
+    public void createdTransactionRefundBooking(UUID bookingId) {
+
+        Booking booking = bookingService.getBookingById(bookingId);
+        if(booking == null) {
+            throw new RuntimeException("Booking not found");
+        }
+
+        Payment payment = new Payment();
+        payment.setBooking(booking);
+        payment.setCreated_at(new Date());
+        float refund = - booking.getTotalPrice() + booking.getTicketPrice();
+        payment.setPrice(refund);
+
+        Transactions transaction = new Transactions();
+
+        Account admin = accountRepository.findAccountByRole(Role.MANAGER);
+        Account customer =  authenticationService.getCurrentAccount();
+
+        transaction.setTo(customer);
+        transaction.setFrom(admin);
+        transaction.setPayment(payment);
+        transaction.setCreated_at(LocalDateTime.now());
+        transaction.setPrice(refund);
+        transaction.setStatus(StatusTransactions.SUCCESS);
+        transaction.setDescription("Refund for booking " + booking.getId());
+
+        paymentRepository.save(payment);
+        transactionRepository.save(transaction);
+
+    }
+
 
     public List<TransactionRespose> getAllTransaction() {
         List<TransactionRespose> transactionList = new ArrayList<>();

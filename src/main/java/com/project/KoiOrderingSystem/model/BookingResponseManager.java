@@ -14,6 +14,10 @@ public class BookingResponseManager {
 
     UUID id;
 
+    int quantity;
+
+    float ticketPrice;
+
     float totalPrice;
 
     String image;
@@ -23,6 +27,10 @@ public class BookingResponseManager {
     StatusBooking status;
 
     String note;
+
+    String refundImage;
+
+    Date cancelDate;
 
     Account account;
 

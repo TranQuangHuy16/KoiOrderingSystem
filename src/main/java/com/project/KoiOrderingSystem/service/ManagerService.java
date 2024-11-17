@@ -54,8 +54,20 @@ public class ManagerService {
             koiSold.put("totalSold", koi[1]);
             topKoiSold.add(koiSold);
         }
-
         stats.put("topKoiSold", topKoiSold);
+
+
+        List<Object[]> topFarm = farmRepository.findTopFarm();
+        List<Map<String, Object>> topFarmBooking = new ArrayList<>();
+
+        for (Object[] farm : topFarm) {
+            Map<String, Object> farmBooking = new HashMap<>();
+            farmBooking.put("name", farm[0]);
+            farmBooking.put("bookingCount", farm[1]);
+            topFarmBooking.add(farmBooking);
+        }
+        stats.put("topFarmBooking", topFarmBooking);
+
         return stats;
 
     }
@@ -109,5 +121,39 @@ public class ManagerService {
         }
         revenueAllMonth.put("revenueAll", revenueAll);
         return revenueAllMonth;
+    }
+
+    public Map<String, Object> getBookingByMonth(){
+        Map<String, Object> bookingMonth = new HashMap<>();
+
+        List<Object[]> booking = bookingRepository.getBookingByMonth();
+        List<Map<String, Object>> bookingData = new ArrayList<>();
+
+        for(Object[] b : booking) {
+            Map<String, Object> monthData = new HashMap<>();
+            monthData.put("year", b[0]);
+            monthData.put("month", b[1]);
+            monthData.put("QuantityOfMonth", b[2]);
+            bookingData.add(monthData);
+        }
+        bookingMonth.put("booking", bookingData);
+        return bookingMonth;
+    }
+
+    public Map<String, Object> getOrderByMonth(){
+        Map<String, Object> bookingMonth = new HashMap<>();
+
+        List<Object[]> booking = orderRepository.getOrderByMonth();
+        List<Map<String, Object>> orderData = new ArrayList<>();
+
+        for(Object[] b : booking) {
+            Map<String, Object> monthData = new HashMap<>();
+            monthData.put("year", b[0]);
+            monthData.put("month", b[1]);
+            monthData.put("QuantityOfMonth", b[2]);
+            orderData.add(monthData);
+        }
+        bookingMonth.put("booking", orderData);
+        return bookingMonth;
     }
 }

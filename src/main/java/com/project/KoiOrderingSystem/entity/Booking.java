@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,13 +29,28 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @Min(value = 0, message = "Total Price must be more than 0")
+    @Min(value = 0, message = "Price must be more than 0")
+    @Column(nullable = true)
     float totalPrice;
 
+    @Min(value = 0, message = "Ticket price must be more than 0")
     @Column(nullable = true)
+    float ticketPrice;
+
+    @Column(nullable = true, columnDefinition = "TEXT")
+    @Lob
     String image;
 
+    @Column(nullable = true)
+    String refundImage;
+
     Date bookingDate;
+
+    @Column(nullable = true)
+    Date cancelDate;
+
+    @Min(value = 1, message = "Quantity must be more than 1")
+    int quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'PENDING_CONFIRMATION'")
@@ -58,7 +75,7 @@ public class Booking {
     @JsonIgnore
     Feedback feedback;
 
-    @OneToOne(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking")
     @JsonIgnore
-    Payment payment;
+    List<Payment> payments;
 }
