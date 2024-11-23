@@ -20,4 +20,6 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "GROUP BY YEAR(b.bookingDate), MONTH(b.bookingDate) " +
             "ORDER BY YEAR(b.bookingDate), MONTH(b.bookingDate)")
     List<Object[]> getBookingByMonth();
+
+    // Hello
 }
