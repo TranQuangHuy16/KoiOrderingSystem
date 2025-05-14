@@ -6,10 +6,12 @@ import com.project.KoiOrderingSystem.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -40,9 +42,15 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping("/login-google")
-    private ResponseEntity checkLoginGoogle(@RequestBody LoginGoogleRequest loginGGRequest){
-        AccountResponse accountResponse = authenticationService.loginGoogle(loginGGRequest);
+    @PostMapping("/auth/google")
+    private ResponseEntity checkLoginGoogle(@RequestBody GoogleLoginRequest googleLoginRequest){
+        AccountResponse accountResponse = authenticationService.loginGoogle(googleLoginRequest);
+        return ResponseEntity.ok(accountResponse);
+    }
+
+    @PostMapping("/auth/facebook")
+    private ResponseEntity checkLoginFacebook(@RequestBody FacebookLoginRequest facebookLoginRequest){
+        AccountResponse accountResponse = authenticationService.loginFacebook(facebookLoginRequest);
         return ResponseEntity.ok(accountResponse);
     }
 
