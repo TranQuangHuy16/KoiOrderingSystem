@@ -1,6 +1,10 @@
 package com.project.KoiOrderingSystem.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -34,6 +38,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -203,6 +208,42 @@ public class AuthenticationService implements UserDetailsService {
             throw new AuthException("Invalid token" + e);
         }
     }
+
+    public AccountResponse loginGoogleFirebase(GoogleLoginRequest googleLoginRequest) {
+        String idToken = googleLoginRequest.getToken();
+        Account user = new Account();
+        try {
+            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+            String uid = decodedToken.getUid();
+            String email = decodedToken.getEmail();
+            String name = decodedToken.getName();
+            user.setRole(Role.CUSTOMER);
+            user.setEmail(email);
+            user.setUsername(email);
+            user.setFirstName(name);
+            Account existingUser = accountRepository.findAccountByUsername(user.getUsername());
+            if (existingUser == null) {
+                user.setRole(Role.CUSTOMER);
+                accountRepository.save(user);
+            }
+
+            AccountResponse accountResponse = new AccountResponse();
+            accountResponse.setUsername(user.getUsername());
+            accountResponse.setRole(user.getRole());
+            accountResponse.setEmail(user.getEmail());
+            accountResponse.setFirstName(user.getFirstName());
+            accountResponse.setLastName(user.getLastName());
+            accountResponse.setToken(tokenService.generateToken(user));
+            return accountResponse;
+            // Tại đây bạn có thể tạo user nếu chưa có hoặc cập nhật thông tin
+
+            // Tạo JWT cho ứng dụng backend
+
+        } catch (FirebaseAuthException e) {
+             throw new AuthException("Invalid token" + e);
+        }
+    }
+
 
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest){
         Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());

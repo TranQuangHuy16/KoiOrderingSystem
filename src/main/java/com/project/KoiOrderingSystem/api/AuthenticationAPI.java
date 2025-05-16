@@ -48,6 +48,12 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(accountResponse);
     }
 
+    @PostMapping("/auth/google-firebase")
+    private ResponseEntity checkLoginGoogleFirebase(@RequestBody GoogleLoginRequest googleLoginRequest){
+        AccountResponse accountResponse = authenticationService.loginGoogleFirebase(googleLoginRequest);
+        return ResponseEntity.ok(accountResponse);
+    }
+
     @PostMapping("/auth/facebook")
     private ResponseEntity checkLoginFacebook(@RequestBody FacebookLoginRequest facebookLoginRequest){
         AccountResponse accountResponse = authenticationService.loginFacebook(facebookLoginRequest);
