@@ -40,7 +40,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/forgot-password",
             "/api/auth/google",
             "/api/auth/facebook",
-            "/api/auth/google-firebase"
+            "/api/auth/google-firebase",
+            "api/messages/chat",
+            "/api/messages"
     );
 
     public boolean checkIsPublic(String uri) {
