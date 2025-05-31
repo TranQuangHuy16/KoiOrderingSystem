@@ -4,14 +4,18 @@ import com.project.KoiOrderingSystem.entity.Account;
 import com.project.KoiOrderingSystem.model.*;
 import com.project.KoiOrderingSystem.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -76,6 +80,17 @@ public class AuthenticationAPI {
     public ResponseEntity forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest){
         authenticationService.forgotPassword(forgotPasswordRequest);
         return ResponseEntity.ok("Check your email to reset password");
+    }
+
+    @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
+    public void getQrCode(HttpServletResponse response) throws Exception {
+        UUID uuid = UUID.randomUUID();
+        byte[] qrImage = authenticationService.generateQrCode(uuid, 300, 300);
+
+        response.setContentType(MediaType.IMAGE_PNG_VALUE);
+        OutputStream out = response.getOutputStream();
+        out.write(qrImage);
+        out.flush();
     }
 
     @PostMapping("/reset-password")
