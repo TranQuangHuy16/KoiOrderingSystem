@@ -296,17 +296,22 @@ public class AuthenticationService implements UserDetailsService {
         return account;
     }
 
-    public byte[] generateQrCode(UUID uuid, int width, int height) throws WriterException, IOException, IOException {
+    public byte[] generateQrCode(UUID uuid, String name, int value, int width, int height) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hints = new HashMap<>();
         hints.put(EncodeHintType.MARGIN, 1);
 
-        BitMatrix bitMatrix = qrCodeWriter.encode(uuid.toString(), BarcodeFormat.QR_CODE, width, height, hints);
+        // Ghép chuỗi chứa thông tin uuid, name, value
+        String qrContent = String.format("{\"uuid\":\"%s\", \"name\":\"%s\", \"value\":%d}", uuid.toString(), name, value);
+
+
+        BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height, hints);
 
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
         return pngOutputStream.toByteArray();
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

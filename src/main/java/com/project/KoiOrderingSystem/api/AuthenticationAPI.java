@@ -83,15 +83,20 @@ public class AuthenticationAPI {
     }
 
     @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
-    public void getQrCode(HttpServletResponse response) throws Exception {
+    public void getQrCode(
+            @RequestParam(name = "name") String name,
+            @RequestParam(name = "value") int value,
+            HttpServletResponse response) throws Exception {
+
         UUID uuid = UUID.randomUUID();
-        byte[] qrImage = authenticationService.generateQrCode(uuid, 300, 300);
+        byte[] qrImage = authenticationService.generateQrCode(uuid, name, value, 300, 300);
 
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         OutputStream out = response.getOutputStream();
         out.write(qrImage);
         out.flush();
     }
+
 
     @PostMapping("/reset-password")
     public ResponseEntity resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest){
